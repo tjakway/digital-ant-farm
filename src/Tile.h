@@ -1,6 +1,9 @@
 #ifndef TILE_H
 #define TILE_H
 
+#include <stdexcept>
+#include <string>
+
 /**
  * Immutable class for represeting one tile on the board
  * contains information about its position and whether its neighbors are alive
@@ -24,6 +27,17 @@ class Tile
 
     /** returns whether this tile will be alive in the next generation */
     const bool willBeAlive();
-}
+};
+
+/**
+ * see http://stackoverflow.com/questions/4747706/standard-or-custom-exception-in-c
+ * subclass created for the sake of clarity
+ */
+class TileException : std::logic_error
+{
+    public:
+        TileException(const std::string& what_arg)
+            : logic_error(what_arg) {}
+};
 
 #endif

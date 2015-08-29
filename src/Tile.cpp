@@ -10,7 +10,7 @@ const int Tile::getY()
     return y;
 }
 
-const bool isAlive()
+const bool Tile::isAlive()
 {
     return alive;
 }
@@ -49,4 +49,6 @@ const bool Tile::willBeAlive()
     /** 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction. */
     if(!isAlive() && numLiveNeighbors == 3)
         return true;
+
+    throw TileException("Invalid game board state -- should never reach here.");
 }
