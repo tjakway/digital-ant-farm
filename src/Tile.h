@@ -23,7 +23,7 @@ class Tile
     const bool isAlive();
 
     /** returns whether this tile will be alive in the next generation */
-    const bool willLive();
+    const bool willBeAlive();
 }
 
 #endif

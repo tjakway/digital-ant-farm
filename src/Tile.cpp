@@ -21,7 +21,7 @@ const bool isAlive()
  * this is OK because by looping through every tile you will get the correct generation
  * implement Conway's 4 rules of the game of life
  */
-const bool Tile::willLive()
+const bool Tile::willBeAlive()
 {
     /** rules quoted from wikipedia: https://en.wikipedia.org/wiki/Conway's_Game_of_Life#Rules */
     int numLiveNeighbors = 0;
@@ -47,5 +47,6 @@ const bool Tile::willLive()
         return false;
 
     /** 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction. */
-    
+    if(!isAlive() && numLiveNeighbors == 3)
+        return true;
 }
