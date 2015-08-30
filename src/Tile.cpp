@@ -1,16 +1,16 @@
 #include "Tile.h"
 
-const int Tile::getX()
+int Tile::getX()
 {
     return x;
 }
 
-const int Tile::getY()
+int Tile::getY()
 {
     return y;
 }
 
-const bool Tile::isAlive()
+bool Tile::isAlive()
 {
     return alive;
 }
@@ -21,7 +21,7 @@ const bool Tile::isAlive()
  * this is OK because by looping through every tile you will get the correct generation
  * implement Conway's 4 rules of the game of life
  */
-const bool Tile::willBeAlive()
+bool Tile::willBeAlive()
 {
     /** rules quoted from wikipedia: https://en.wikipedia.org/wiki/Conway's_Game_of_Life#Rules */
     int numLiveNeighbors = 0;
