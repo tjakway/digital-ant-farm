@@ -17,8 +17,8 @@ public:
     /** copy constructor */
     Grid(const Grid& other);
 
-    const int getWidth();
-    const int getHeight();
+    int getWidth();
+    int getHeight();
 };
 
 #endif

@@ -1,14 +1,46 @@
 #include "Grid.h"
 
+#include <cassert>
+
 Grid::Grid(const Grid& other)
 {
     
 }
-const int getWidth()
+
+int Grid::getWidth()
 {
     return -1;
 }
-const int getHeight()
+
+int Grid::getHeight()
 {
     return -1;
+}
+
+void Grid::increaseGrid()
+{
+#ifdef DEBUG
+    //check the grid is rectangular and not jagged
+    //i.e. all sublists are the same size
+    //note that the number of sublists does not have to be equal to the number of columns
+    for(std::list<bool>& thisSubList : tiles)
+    {
+        for(std::list<bool>& otherSubList : tiles)
+        {
+            assert(thisSubList.size() == otherSubList.size());
+        }
+    }
+#endif
+    //add 1 tile to the beginning of each sublist (prepending a column)
+    
+    //add 1 tile to the end of each sublist (appending a column)
+    
+    //add 1 row to the beginning of the tiles list (prepending a row)
+    
+    //add 1 row to the end of the tiles list (appending a column)
+    
+#ifdef DEBUG
+    //check the size is correct
+
+#endif
 }
