@@ -4,6 +4,10 @@
 #include <stdexcept>
 #include <string>
 
+/** adds some clarity instead of using magic true/false all over the place */
+#define TILE_DEAD false
+#define TILE_ALIVE true
+
 /**
  * Immutable class for represeting one tile on the board
  * contains information about its position and whether its neighbors are alive
@@ -17,16 +21,16 @@ class Tile
 
     public:
     Tile(int paramX, int paramY, bool paramIsAlive, bool paramLeftAlive, bool paramRightAlive, bool paramTopAlive, bool paramBottomAlive)
-     : x(paramX), y(paramY), alive(paramIsAlive), leftAlive(paramLeftAlive), rightAlive(paramRightAlive), topAlive(paramTopAlive), bottomAlive(paramBottomAlive)
+     : x(paramX), y(paramY),  leftAlive(paramLeftAlive), rightAlive(paramRightAlive), topAlive(paramTopAlive), bottomAlive(paramBottomAlive), alive(paramIsAlive)
     {}
 
-    const int getX();
-    const int getY();
+    int getX();
+    int getY();
 
-    const bool isAlive();
+    bool isAlive();
 
     /** returns whether this tile will be alive in the next generation */
-    const bool willBeAlive();
+    bool willBeAlive();
 };
 
 /**
