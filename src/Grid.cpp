@@ -27,6 +27,9 @@ void Grid::expandGrid()
         }
     }
 #endif
+    const int newWidth = getWidth() + 1;
+    const int newHeight = getHeight() + 1;
+
     //add 1 tile to the beginning of each sublist (prepending a column)
     //add 1 tile to the end of each sublist (appending a column)
     for(std::list<bool>* thisSubList : tiles)
@@ -37,6 +40,11 @@ void Grid::expandGrid()
 
     //add 1 row to the beginning of the tiles list (prepending a row)
     //add 1 row to the end of the tiles list (appending a column)
+    std::list<bool> *firstList = new std::list<bool>(newWidth, TILE_DEAD),
+        *lastList = new std::list<bool>(newWidth, TILE_DEAD);
+    tiles.push_front(firstList);
+    tiles.push_back(lastList);
+    
     
 #ifdef DEBUG
     //check the size is correct
@@ -62,7 +70,7 @@ Grid::Grid(const int width, const int height)
     {
         //don't have to loop to add items to the list
         //this list CTOR will insert <width> number of bools all at once
-        std::list<bool>* subList = new std::list<bool>(width, false);
+        std::list<bool>* subList = new std::list<bool>(width, TILE_DEAD);
         //insert the sublist
         tiles.push_back(subList);
     }
