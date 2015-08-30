@@ -11,7 +11,7 @@ class Grid
 private:
     std::list<std::list<bool>> tiles;
     /** expand the grid by adding a column to each side and a row to the top and bottom*/
-    void increaseGrid();
+    void expandGrid();
 
 public:
     /** copy constructor */

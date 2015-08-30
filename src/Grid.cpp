@@ -17,7 +17,7 @@ int Grid::getHeight()
     return -1;
 }
 
-void Grid::increaseGrid()
+void Grid::expandGrid()
 {
 #ifdef DEBUG
     //check the grid is rectangular and not jagged
