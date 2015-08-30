@@ -5,12 +5,18 @@
 
 int Grid::getWidth()
 {
-    return -1;
+#ifdef DEBUG
+    assertGridIsRectangular(tiles);
+#endif
+    return tiles.front()->size();
 }
 
 int Grid::getHeight()
 {
-    return -1;
+#ifdef DEBUG
+    assertGridIsRectangular(tiles);
+#endif
+    return tiles.size();
 }
 
 namespace
@@ -18,6 +24,9 @@ namespace
 #ifdef DEBUG
     void assertGridIsRectangular(std::list<std::list<bool>*>& tiles)
     {
+        //sanity check
+        assert(!tiles.empty());
+
         //check the grid is rectangular and not jagged
         //i.e. all sublists are the same size
         //note that the number of sublists does not have to be equal to the number of columns
@@ -25,6 +34,7 @@ namespace
         {
             for(std::list<bool>* otherSubList : tiles)
             {
+                assert(!otherSubList.empty());
                 assert(thisSubList->size() == otherSubList->size());
             }
         }
