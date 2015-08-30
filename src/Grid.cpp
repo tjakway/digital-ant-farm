@@ -3,22 +3,6 @@
 #include <cassert>
 #include "Tile.h"
 
-int Grid::getWidth()
-{
-#ifdef DEBUG
-    assertGridIsRectangular(tiles);
-#endif
-    return tiles.front()->size();
-}
-
-int Grid::getHeight()
-{
-#ifdef DEBUG
-    assertGridIsRectangular(tiles);
-#endif
-    return tiles.size();
-}
-
 namespace
 {
 #ifdef DEBUG
@@ -34,12 +18,28 @@ namespace
         {
             for(std::list<bool>* otherSubList : tiles)
             {
-                assert(!otherSubList.empty());
+                assert(!otherSubList->empty());
                 assert(thisSubList->size() == otherSubList->size());
             }
         }
     }
 #endif
+}
+
+int Grid::getWidth()
+{
+#ifdef DEBUG
+    assertGridIsRectangular(tiles);
+#endif
+    return tiles.front()->size();
+}
+
+int Grid::getHeight()
+{
+#ifdef DEBUG
+    assertGridIsRectangular(tiles);
+#endif
+    return tiles.size();
 }
 
 void Grid::expandGrid()
