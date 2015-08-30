@@ -13,19 +13,30 @@ int Grid::getHeight()
     return -1;
 }
 
-void Grid::expandGrid()
+namespace
 {
 #ifdef DEBUG
-    //check the grid is rectangular and not jagged
-    //i.e. all sublists are the same size
-    //note that the number of sublists does not have to be equal to the number of columns
-    for(std::list<bool>* thisSubList : tiles)
+    void assertGridIsRectangular(std::list<std::list<bool>*>& tiles)
     {
-        for(std::list<bool>* otherSubList : tiles)
+        //check the grid is rectangular and not jagged
+        //i.e. all sublists are the same size
+        //note that the number of sublists does not have to be equal to the number of columns
+        for(std::list<bool>* thisSubList : tiles)
         {
-            assert(thisSubList->size() == otherSubList->size());
+            for(std::list<bool>* otherSubList : tiles)
+            {
+                assert(thisSubList->size() == otherSubList->size());
+            }
         }
     }
+#endif
+}
+
+void Grid::expandGrid()
+{
+    //check the grid is the right shape before and after we modify it
+#ifdef DEBUG
+    assertGridIsRectangular(tiles);
 #endif
     const int newWidth = getWidth() + 1;
     const int newHeight = getHeight() + 1;
@@ -48,9 +59,10 @@ void Grid::expandGrid()
     
 #ifdef DEBUG
     //check the size is correct
-
+    assertGridIsRectangular(tiles);
 #endif
 }
+
 
 
 bool Grid::touchingEdges()
