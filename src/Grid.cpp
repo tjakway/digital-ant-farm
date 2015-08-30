@@ -1,6 +1,7 @@
 #include "Grid.h"
 
 #include <cassert>
+#include "Tile.h"
 
 Grid::Grid(const Grid& other)
 {
@@ -32,8 +33,13 @@ void Grid::expandGrid()
     }
 #endif
     //add 1 tile to the beginning of each sublist (prepending a column)
+    for(std::list<bool>& thisSubList : tiles)
+    {
+        thisSubList.push_front(TILE_DEAD);
+    }
     
     //add 1 tile to the end of each sublist (appending a column)
+    //
     
     //add 1 row to the beginning of the tiles list (prepending a row)
     
@@ -43,4 +49,11 @@ void Grid::expandGrid()
     //check the size is correct
 
 #endif
+}
+
+
+bool Grid::touchingEdges()
+{
+    //TODO: IMPLEMENT
+    return true;
 }
