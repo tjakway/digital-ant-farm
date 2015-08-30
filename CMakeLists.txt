@@ -41,10 +41,9 @@ FILE(GLOB TESTS_SRC test/*.cpp test/*.h)
 
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 include_directories(${GTEST_INCLUDE_DIRS})
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(${TESTS_EXE} ${TESTS_SRC})
-
-add_dependencies(${TESTS_EXE} googletest)
 
 target_link_libraries(${TESTS_EXE} gtest gtest_main)
 
