@@ -10,4 +10,15 @@ FILE(GLOB SRC src/*.cpp src/*.h)
 #see http://stackoverflow.com/questions/10851247/how-to-activate-c-11-in-cmake for proper ways to enable C++11
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+if(CMAKE_BUILD_TYPE EQUAL "DEBUG")
+    message("Building in debug mode.")
+    #see http://stackoverflow.com/questions/5352074/how-to-create-a-c-define-for-a-certain-target-using-cmake
+    add_definitions( -DDEBUG )
+else(CMAKE_BUILD_TYPE EQUAL "DEBUG")
+    #disables assertions
+    #see http://stackoverflow.com/questions/5354314/how-to-completely-disable-assertion
+    #mandated by POSIX
+    add_definitions( -DNDEBUG )
+endif (CMAKE_BUILD_TYPE EQUAL "DEBUG")
+
 add_library(ant_farm_lib ${SRC})
