@@ -23,3 +23,29 @@ else((${CMAKE_BUILD_TYPE} STREQUAL "DEBUG") OR (${CMAKE_BUILD_TYPE} STREQUAL "De
 endif((${CMAKE_BUILD_TYPE} STREQUAL "DEBUG") OR (${CMAKE_BUILD_TYPE} STREQUAL "Debug"))
 
 add_library(ant_farm_lib ${SRC})
+
+#build tests
+#see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
+
+set(TESTS_EXE "tests")
+
+#add google test
+#gtest is directly checked into the repository to reduce build script complexity
+#see http://stackoverflow.com/questions/9689183/cmake-googletest
+#builds gtest in a subdirectory of the binary dir
+add_subdirectory("${CMAKE_SOURCE_DIR}/lib/gtest-1.7.0" ${CMAKE_BINARY_DIR}/gtest-bin)
+
+#find test sources
+#WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
+FILE(GLOB TESTS_SRC test/*.cpp test/*.h)
+
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories(${GTEST_INCLUDE_DIRS})
+
+add_executable(${TESTS_EXE} ${TESTS_SRC})
+
+add_dependencies(${TESTS_EXE} googletest)
+
+target_link_libraries(${TESTS_EXE} gtest gtest_main)
+
+target_link_libraries(${TESTS_EXE} ant_farm_lib)
