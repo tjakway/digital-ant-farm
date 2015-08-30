@@ -25,6 +25,8 @@ public:
 
     Grid(const int width, const int height);
 
+    ~Grid();
+
     int getWidth();
     int getHeight();
 };

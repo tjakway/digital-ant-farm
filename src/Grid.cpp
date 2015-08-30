@@ -55,3 +55,23 @@ bool Grid::touchingEdges()
     //TODO: IMPLEMENT
     return true;
 }
+
+Grid::Grid(const int width, const int height)
+{
+    for(int i = 0; i < height; i++)
+    {
+        //don't have to loop to add items to the list
+        //this list CTOR will insert <width> number of bools all at once
+        std::list<bool>* subList = new std::list<bool>(width, false);
+        //insert the sublist
+        tiles.push_back(subList);
+    }
+}
+
+Grid::~Grid()
+{
+    for(std::list<bool>* thisSubList : tiles)
+    {
+        delete thisSubList;
+    }
+}
