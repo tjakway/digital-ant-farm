@@ -3,11 +3,6 @@
 #include <cassert>
 #include "Tile.h"
 
-Grid::Grid(const Grid& other)
-{
-    
-}
-
 int Grid::getWidth()
 {
     return -1;
@@ -54,6 +49,11 @@ bool Grid::touchingEdges()
 {
     //TODO: IMPLEMENT
     return true;
+}
+
+Grid::Grid(const Grid& other)
+{
+    //TODO: IMPLEMENT
 }
 
 Grid::Grid(const int width, const int height)
