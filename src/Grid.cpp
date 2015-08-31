@@ -3,6 +3,8 @@
 #include <cassert>
 #include "Tile.h"
 
+#include <stdexcept>
+
 #ifdef DEBUG
 #include <iostream>
 #endif
@@ -136,4 +138,13 @@ void Grid::runGeneration()
 
     assert(!touchingEdges());
 
+}
+
+void Grid::setTile(unsigned int x, unsigned int y, bool alive)
+{
+    //subtract 1 because y is zero-indexed
+    if(tiles.size()-1 < y)
+    {
+       throw std::out_of_range("y is greater than the number of rows!");
+    }
 }

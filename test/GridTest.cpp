@@ -26,3 +26,12 @@ TEST(GridTests, testExpandSize)
     ASSERT_TRUE(grid.getWidth() == (width + 2));
     ASSERT_TRUE(grid.getHeight() == (height + 2));
 }
+
+TEST(GridTests, testTouchingEdges)
+{
+    const int width=10, height=10;
+    Grid grid(width, height);
+    ASSERT_FALSE(grid.touchingEdges());
+    
+
+}

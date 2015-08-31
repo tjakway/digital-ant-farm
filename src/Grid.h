@@ -15,6 +15,7 @@ class Grid
 #ifdef TESTING
     FRIEND_TEST(GridTests, testCtor);
     FRIEND_TEST(GridTests, testExpandSize);
+    FRIEND_TEST(GridTests, testTouchingEdges);
 #endif
 
 private:
@@ -40,6 +41,8 @@ public:
 
     /** mutate this grid into the next generation */
     void runGeneration();
+
+    void setTile(unsigned int x, unsigned int y, bool alive);
 
     int getWidth();
     int getHeight();
