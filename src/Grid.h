@@ -1,7 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 
-#include <list>
+#include <deque>
 
 #ifdef TESTING
 #include "gtest/gtest.h"
@@ -19,7 +19,7 @@ class Grid
 #endif
 
 private:
-    std::list<std::list<bool>*> tiles;
+    std::deque<std::deque<bool>*> tiles;
     /** expand the grid by adding a column to each side and a row to the top and bottom*/
     void expandGrid();
     /** returns true if there are live tiles on the edge of the grid

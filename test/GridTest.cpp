@@ -15,7 +15,7 @@ TEST(GridTests, testExpandSize)
     Grid grid(width, height);
     //check dimensions
     //check width
-    for(std::list<bool>* thisSubList : grid.tiles)
+    for(std::deque<bool>* thisSubList : grid.tiles)
     {
         ASSERT_TRUE(thisSubList->size() == width);
     }

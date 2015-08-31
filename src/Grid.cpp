@@ -12,7 +12,7 @@
 namespace
 {
 #ifdef DEBUG
-    void assertGridIsRectangular(std::list<std::list<bool>*>& tiles)
+    void assertGridIsRectangular(std::deque<std::deque<bool>*>& tiles)
     {
         //sanity check
         assert(!tiles.empty());
@@ -20,9 +20,9 @@ namespace
         //check the grid is rectangular and not jagged
         //i.e. all sublists are the same size
         //note that the number of sublists does not have to be equal to the number of columns
-        for(std::list<bool>* thisSubList : tiles)
+        for(std::deque<bool>* thisSubList : tiles)
         {
-            for(std::list<bool>* otherSubList : tiles)
+            for(std::deque<bool>* otherSubList : tiles)
             {
                 assert(!otherSubList->empty());
                 assert(thisSubList->size() == otherSubList->size());
@@ -52,7 +52,7 @@ void Grid::expandGrid()
 
     //add 1 tile to the beginning of each sublist (prepending a column)
     //add 1 tile to the end of each sublist (appending a column)
-    for(std::list<bool>* thisSubList : tiles)
+    for(std::deque<bool>* thisSubList : tiles)
     {
         thisSubList->push_front(TILE_DEAD);
         thisSubList->push_back(TILE_DEAD);
@@ -60,8 +60,8 @@ void Grid::expandGrid()
 
     //add 1 row to the beginning of the tiles list (prepending a row)
     //add 1 row to the end of the tiles list (appending a column)
-    std::list<bool> *firstList = new std::list<bool>(newWidth, TILE_DEAD),
-        *lastList = new std::list<bool>(newWidth, TILE_DEAD);
+    std::deque<bool> *firstList = new std::deque<bool>(newWidth, TILE_DEAD),
+        *lastList = new std::deque<bool>(newWidth, TILE_DEAD);
     tiles.push_front(firstList);
     tiles.push_back(lastList);
     
@@ -80,7 +80,7 @@ void Grid::expandGrid()
 bool Grid::touchingEdges()
 {
     //check top edge for live tiles
-    std::list<bool>* topSubList = tiles.front();
+    std::deque<bool>* topSubList = tiles.front();
     for(bool thisBool : *topSubList)
     {
         if(thisBool == TILE_ALIVE)
@@ -88,7 +88,7 @@ bool Grid::touchingEdges()
     }
 
     //check bottom edge for live tiles
-    std::list<bool>* bottomSubList = tiles.back();
+    std::deque<bool>* bottomSubList = tiles.back();
     for(bool thisBool : *bottomSubList)
     {
         if(thisBool == TILE_ALIVE)
@@ -96,7 +96,7 @@ bool Grid::touchingEdges()
     }
 
     //check the left and right edges
-    for(std::list<bool>* thisSubList : tiles)
+    for(std::deque<bool>* thisSubList : tiles)
     {
         if(thisSubList->front() == TILE_ALIVE || thisSubList->back() == TILE_ALIVE)
             return true;
@@ -117,7 +117,7 @@ Grid::Grid(const int width, const int height)
     {
         //don't have to loop to add items to the list
         //this list CTOR will insert <width> number of bools all at once
-        std::list<bool>* subList = new std::list<bool>(width, TILE_DEAD);
+        std::deque<bool>* subList = new std::deque<bool>(width, TILE_DEAD);
         //insert the sublist
         tiles.push_back(subList);
     }
@@ -125,7 +125,7 @@ Grid::Grid(const int width, const int height)
 
 Grid::~Grid()
 {
-    for(std::list<bool>* thisSubList : tiles)
+    for(std::deque<bool>* thisSubList : tiles)
     {
         delete thisSubList;
     }
