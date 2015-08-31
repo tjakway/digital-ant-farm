@@ -13,4 +13,6 @@ TEST(GridTests, testExpandSize)
     const int width=10, height=10;
     Grid grid(width, height);
     grid.expandGrid();
+    ASSERT_TRUE(grid.getWidth() == (width + 2));
+    ASSERT_TRUE(grid.getHeight() == (height + 2));
 }
