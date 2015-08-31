@@ -3,6 +3,10 @@
 #include <cassert>
 #include "Tile.h"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 namespace
 {
 #ifdef DEBUG
@@ -19,6 +23,7 @@ namespace
             for(std::list<bool>* otherSubList : tiles)
             {
                 assert(!otherSubList->empty());
+                std::cerr << "thisSubList->size():  " << thisSubList->size() << ", otherSubList->size():  " << otherSubList->size() << std::endl;
                 assert(thisSubList->size() == otherSubList->size());
             }
         }
@@ -28,17 +33,11 @@ namespace
 
 int Grid::getWidth()
 {
-#ifdef DEBUG
-    assertGridIsRectangular(tiles);
-#endif
     return tiles.front()->size();
 }
 
 int Grid::getHeight()
 {
-#ifdef DEBUG
-    assertGridIsRectangular(tiles);
-#endif
     return tiles.size();
 }
 
@@ -46,10 +45,9 @@ void Grid::expandGrid()
 {
     //check the grid is the right shape before and after we modify it
 #ifdef DEBUG
-    assertGridIsRectangular(tiles);
+//    assertGridIsRectangular(tiles);
 #endif
-    const int newWidth = getWidth() + 1;
-    const int newHeight = getHeight() + 1;
+    const int newWidth = getWidth() + 2;
 
     //add 1 tile to the beginning of each sublist (prepending a column)
     //add 1 tile to the end of each sublist (appending a column)
@@ -69,7 +67,7 @@ void Grid::expandGrid()
     
 #ifdef DEBUG
     //check the size is correct
-    assertGridIsRectangular(tiles);
+//    assertGridIsRectangular(tiles);
 #endif
 }
 
