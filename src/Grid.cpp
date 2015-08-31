@@ -23,7 +23,6 @@ namespace
             for(std::list<bool>* otherSubList : tiles)
             {
                 assert(!otherSubList->empty());
-                std::cerr << "thisSubList->size():  " << thisSubList->size() << ", otherSubList->size():  " << otherSubList->size() << std::endl;
                 assert(thisSubList->size() == otherSubList->size());
             }
         }
@@ -45,7 +44,7 @@ void Grid::expandGrid()
 {
     //check the grid is the right shape before and after we modify it
 #ifdef DEBUG
-//    assertGridIsRectangular(tiles);
+    assertGridIsRectangular(tiles);
 #endif
     const int newWidth = getWidth() + 2;
 
@@ -67,7 +66,7 @@ void Grid::expandGrid()
     
 #ifdef DEBUG
     //check the size is correct
-//    assertGridIsRectangular(tiles);
+    assertGridIsRectangular(tiles);
 #endif
 }
 
