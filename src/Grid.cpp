@@ -72,10 +72,36 @@ void Grid::expandGrid()
 
 
 
+/**
+ * should this be renamed to liveEdges()?
+ */
 bool Grid::touchingEdges()
 {
-    //TODO: IMPLEMENT
-    return true;
+    //check top edge for live tiles
+    std::list<bool>* topSubList = tiles.front();
+    for(bool thisBool : *topSubList)
+    {
+        if(thisBool == TILE_ALIVE)
+            return true;
+    }
+
+    //check bottom edge for live tiles
+    std::list<bool>* bottomSubList = tiles.back();
+    for(bool thisBool : *bottomSubList)
+    {
+        if(thisBool == TILE_ALIVE)
+            return true;
+    }
+
+    //check the left and right edges
+    for(std::list<bool>* thisSubList : tiles)
+    {
+        if(thisSubList->front() == TILE_ALIVE || thisSubList->back() == TILE_ALIVE)
+            return true;
+    }
+
+    //if we haven't found any live tiles yet, there arent any in the edges
+    return false;
 }
 
 Grid::Grid(const Grid& other)
