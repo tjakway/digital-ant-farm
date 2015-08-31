@@ -25,6 +25,8 @@ private:
      *  call this function at the beginning of every generation to guarantee the grid
      *  always has a buffer of at least 1 empty tile on every side
      *  otherwise we'll try to expand beyond the range of the grid
+     *
+     *  ought not have side effects
      */
     bool touchingEdges();
 
@@ -35,6 +37,9 @@ public:
     Grid(const int width, const int height);
 
     ~Grid();
+
+    /** mutate this grid into the next generation */
+    void runGeneration();
 
     int getWidth();
     int getHeight();

@@ -102,3 +102,12 @@ Grid::~Grid()
         delete thisSubList;
     }
 }
+
+void Grid::runGeneration()
+{
+    if(touchingEdges())
+        expandGrid();
+
+    assert(!touchingEdges());
+
+}
