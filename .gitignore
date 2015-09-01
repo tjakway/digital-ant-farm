@@ -5,6 +5,7 @@ bin/
 
 #ignore vim swap files
 *.swp
+*.swo
 
 # Compiled Object files
 *.slo
