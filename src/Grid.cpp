@@ -147,4 +147,33 @@ void Grid::setTile(unsigned int x, unsigned int y, bool alive)
     {
        throw std::out_of_range("y is greater than the number of rows!");
     }
+
+    std::deque<bool>* selectedRow = tiles.at(y);
+    //subtract 1 because x is zero-indexed
+    if(selectedRow->size()-1 < x)
+    {
+       throw std::out_of_range("x is greater than the number of columns!");
+    }
+
+    //we've found the tile, modify it
+    (*selectedRow)[x] = alive;
+}
+
+/**
+ * static method to set every tile in the grid to TILE_DEAD
+ */
+void Grid::clearGrid(Grid* grid)
+{
+    /**
+     * could make this easier by writing a custom iterator for Grid
+     */
+    for(int x = 0; x < grid->getWidth(); x++)
+    {
+        for(int y = 0; y < grid->getHeight(); y++)
+        {
+            grid->setTile(x, y, TILE_DEAD);
+        }
+    }   
+    
+    assert(!grid->touchingEdges());
 }

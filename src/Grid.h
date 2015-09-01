@@ -16,6 +16,7 @@ class Grid
     FRIEND_TEST(GridTests, testCtor);
     FRIEND_TEST(GridTests, testExpandSize);
     FRIEND_TEST(GridTests, testTouchingEdges);
+    FRIEND_TEST(GridTests, testOutOfBounds);
 #endif
 
 private:
@@ -46,6 +47,12 @@ public:
 
     int getWidth();
     int getHeight();
+
+    /**
+     * sets the passed Grid to all TILE_DEAD
+     * can also just reconstruct the grid object, but this saves a memory allocation
+     */
+    static void clearGrid(Grid*);
 };
 
 #endif
