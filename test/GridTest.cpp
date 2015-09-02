@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "Grid.h"
 #include "Tile.h"
+#include "Util.h"
 #include <list>
 
 TEST(GridTests, testCtor)
@@ -73,7 +74,13 @@ TEST(GridTests, testTouchingEdges)
  */
 TEST(GridTests, testDoubleSetting)
 {
+    const int lower = 10, upper = 1000;
+    const int width = getRandInRangeInclusive(lower, upper),
+              height = getRandInRangeInclusive(lower, upper);
+    Grid grid(width, height);
+    ASSERT_FALSE(grid.touchingEdges());
     
+
 
 }
 

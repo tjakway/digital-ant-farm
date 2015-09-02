@@ -17,6 +17,7 @@ class Grid
     FRIEND_TEST(GridTests, testExpandSize);
     FRIEND_TEST(GridTests, testTouchingEdges);
     FRIEND_TEST(GridTests, testOutOfBounds);
+    FRIEND_TEST(GridTests, testDoubleSetting);
 #endif
 
 private:

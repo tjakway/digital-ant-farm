@@ -9,3 +9,8 @@ namespace {
     std::mt19937 mersenne_rng(rd());
 }
 
+int getRandInRangeInclusive(int lower, int upper)
+{
+    std::uniform_int_distribution<int> distribution(lower, upper);
+    return distribution(mersenne_rng);
+}
