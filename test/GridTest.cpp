@@ -68,22 +68,6 @@ TEST(GridTests, testTouchingEdges)
     ASSERT_FALSE(grid.touchingEdges());
 }
 
-/**
- * test that calling setTile twice doesn't cause errors
- * this test randomly generates its parameters
- */
-TEST(GridTests, testDoubleSetting)
-{
-    const int lower = 10, upper = 1000;
-    const int width = getRandInRangeInclusive(lower, upper),
-              height = getRandInRangeInclusive(lower, upper);
-    Grid grid(width, height);
-    ASSERT_FALSE(grid.touchingEdges());
-    
-
-
-}
-
 TEST(GridTests, testOutOfBounds)
 {
     const int width=10, height=10;
@@ -110,4 +94,29 @@ TEST(GridTests, testOutOfBounds)
         exceptionCaught = true;
     }
     ASSERT_TRUE(exceptionCaught);
+}
+
+/**
+ * test that calling setTile twice doesn't cause errors
+ * this test randomly generates its parameters
+ */
+TEST(GridTests, testDoubleSetting)
+{
+    const int lower = 10, upper = 1000;
+    const int width = getRandInRangeInclusive(lower, upper),
+              height = getRandInRangeInclusive(lower, upper);
+    Grid grid(width, height);
+    ASSERT_FALSE(grid.touchingEdges());
+
+   const int doubleSetPos[] = { getRandInRangeInclusive(lower, width),
+                                getRandInRangeInclusive(lower, height) };
+   const int numTimesDoubleSet = getRandInRangeInclusive(lower, upper);
+
+   for(int i = 0; i < numTimesDoubleSet; i++)
+   {
+       //randomly decide to set the tile to alive or dead
+       const bool tileState = getRandInRangeInclusive(0, 10) % 2 == 0;
+       grid.setTile(doubleSetPos[0], doubleSetPos[1], tileState);
+       ASSERT_TRUE()
+   }
 }

@@ -33,6 +33,8 @@ private:
      */
     bool touchingEdges();
 
+    std::deque<bool>* throwIfOutOfBounds(unsigned int x, unsigned int y, std::deque<std::deque<bool>*> paramTiles);
+
 public:
     /** copy constructor */
     Grid(const Grid& other);
@@ -45,6 +47,7 @@ public:
     void runGeneration();
 
     void setTile(unsigned int x, unsigned int y, bool alive);
+    bool getTile(unsigned int x, unsigned int y);
 
     int getWidth();
     int getHeight();

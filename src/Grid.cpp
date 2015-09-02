@@ -140,7 +140,10 @@ void Grid::runGeneration()
 
 }
 
-void Grid::setTile(unsigned int x, unsigned int y, bool alive)
+/**
+ * return the selected row (corresponding to x) that contains the passed y value
+ */
+std::deque<bool>* Grid::throwIfOutOfBounds(unsigned int x, unsigned int y, std::deque<std::deque<bool>*> paramTiles)
 {
     //subtract 1 because y is zero-indexed
     if(tiles.size()-1 < y)
@@ -148,15 +151,27 @@ void Grid::setTile(unsigned int x, unsigned int y, bool alive)
        throw std::out_of_range("y is greater than the number of rows!");
     }
 
-    std::deque<bool>* selectedRow = tiles.at(y);
+    std::deque<bool>* selectedRow = paramTiles.at(y);
     //subtract 1 because x is zero-indexed
     if(selectedRow->size()-1 < x)
     {
        throw std::out_of_range("x is greater than the number of columns!");
     }
+    return selectedRow;
+}
+
+void Grid::setTile(unsigned int x, unsigned int y, bool alive)
+{
+    std::deque<bool>* selectedRow = throwIfOutOfBounds(x, y, tiles);
 
     //we've found the tile, modify it
     (*selectedRow)[x] = alive;
+}
+
+bool Grid::getTile(unsigned int x, unsigned int y)
+{
+    std::deque<bool>* selectedRow = throwIfOutOfBounds(x, y, tiles);
+    return (*selectedRow)[x];
 }
 
 /**
