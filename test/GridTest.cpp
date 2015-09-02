@@ -117,6 +117,6 @@ TEST(GridTests, testDoubleSetting)
        //randomly decide to set the tile to alive or dead
        const bool tileState = getRandInRangeInclusive(0, 10) % 2 == 0;
        grid.setTile(doubleSetPos[0], doubleSetPos[1], tileState);
-       ASSERT_TRUE()
+       ASSERT_TRUE(grid.getTile(doubleSetPos[0], doubleSetPos[1]) == tileState);
    }
 }
