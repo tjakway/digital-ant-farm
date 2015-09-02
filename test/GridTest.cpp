@@ -67,6 +67,16 @@ TEST(GridTests, testTouchingEdges)
     ASSERT_FALSE(grid.touchingEdges());
 }
 
+/**
+ * test that calling setTile twice doesn't cause errors
+ * this test randomly generates its parameters
+ */
+TEST(GridTests, testDoubleSetting)
+{
+    
+
+}
+
 TEST(GridTests, testOutOfBounds)
 {
     const int width=10, height=10;
