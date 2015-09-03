@@ -46,7 +46,7 @@ elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugWithWarnings")
     message("To disable warnings, pass -DCMAKE_BUILD_TYPE=Debug")
     EnableDebugWarnings()
 #GCC has an -Og option to enable optimizations that won't interfere with debugging
-elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugWithWarningsOptimize")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugWithWarningsOptimized")
     EnableDebugWarnings()
     if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         message("GNU compiler detected, building in optimized debug mode with warnings.")
