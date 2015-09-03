@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 2.8.0)
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
+#store CXX flags so we can use them to build gtest without any warnings we already set
+set(DEFAULT_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
 FILE(GLOB SRC src/*.cpp src/*.h)
 
@@ -76,6 +79,7 @@ set(TESTS_EXE "tests")
 #see http://stackoverflow.com/questions/9689183/cmake-googletest
 #builds gtest in a subdirectory of the binary dir
 add_subdirectory("${CMAKE_SOURCE_DIR}/lib/gtest-1.7.0" ${CMAKE_BINARY_DIR}/gtest-bin)
+set_target_properties(gtest PROPERTIES COMPILE_FLAGS "-DCMAKE_CXX_FLAGS ")
 
 #find test sources
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
@@ -88,6 +92,16 @@ include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(${TESTS_EXE} ${TESTS_SRC})
+
+
+#store the user-specified CXX flags (determined by build type, e.g. Debug, DebugWithWarnings, etc.)
+#we're wiping user-specified CXX flags because we don't want to build gtest with warnings--it will flood the terminal and is not helpful
+set(ANTFARMLIB_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${DEFAULT_CXX_FLAGS}")
+#add_custom_target(gtest_dummy_target ALL)
+#add_dependencies(gtest_dummy_target gtest)
+#done building gtest, reset flags
+set(CMAKE_CXX_FLAGS "${ANTFARMLIB_CXX_FLAGS}")
 
 target_link_libraries(${TESTS_EXE} gtest gtest_main)
 
