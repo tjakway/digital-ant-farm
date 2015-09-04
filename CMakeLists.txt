@@ -1,8 +1,12 @@
 project(digital_ant_farm)
 
-cmake_minimum_required(VERSION 2.8.0)
+#target_compile_options and add_compile_options only available since cmake 2.8.12
+cmake_minimum_required(VERSION 2.8.12)
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
+
+set(MAIN_TARGET "ant_farm_lib")
+set(TEST_TARGET "tests")
 
 #store CXX flags so we can use them to build gtest without any warnings we already set
 set(DEFAULT_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -13,9 +17,25 @@ FILE(GLOB SRC src/*.cpp src/*.h)
 #see http://stackoverflow.com/questions/10851247/how-to-activate-c-11-in-cmake for proper ways to enable C++11
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+#add a property to both the main library and the test target
+function(all_targets_compile_property)
+    #see http://stackoverflow.com/questions/5096881/does-set-target-properties-in-cmake-override-cmake-cxx-flags 
+    foreach(this_flag IN ${ARGN})
+        target_compile_options(${MAIN_TARGET} PRIVATE ${this_flag})
+        target_compile_options(${TEST_TARGET} PRIVATE ${this_flag})
+    endforeach()
+endfunction()
+
+function(all_targets_compile_definitions def)
+    target_compile_definitions(${MAIN_TARGET} PRIVATE ${def})
+    target_compile_definitions(${TEST_TARGET} PRIVATE ${def})
+endfunction()
+
 #divide debug fields into common (i.e. non compiler-specific) debug flags, GCC-specific flags and clang-specific flags
 ########################################
-set(COMMON_DEBUG_FLAGS "-g -Wall -Wextra -Wundef -Wcast-qual -Wconversion -Wformat=2 -Wshadow -ftrapv -Wuninitialized -Winit-self -Wcast-align -Wwrite-strings")
+#cmake list of flags
+#XXX--NOT A STRING!  HAVE TO LOOP THROUGH IT!
+set(COMMON_DEBUG_FLAGS -g -Wall -Wextra -Wundef -Wcast-qual -Wconversion -Wformat=2 -Wshadow -ftrapv -Wuninitialized -Winit-self -Wcast-align -Wwrite-strings)
 
 #Apple LLVM version 6.1.0 (clang-602.0.53) (based on LLVM 3.6.0svn) doesn't support -faddress=sanitize
 #NOTE THAT VALGRIND WILL NOT WORK WITH -fsanitize=address (the other flags do not seem to pose a problem)
@@ -24,10 +44,9 @@ set(GCC_OPTIMIZE_DEBUG "-Og")
 ########################################
 
 function(EnableDebugWarnings)
-    add_definitions( -DDEBUG ) 
-    #enable non-compiler specific flags
-    #by default variables set in a function are in local scope!  need PARENT_SCOPE to modify global variables
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_DEBUG_FLAGS}" PARENT_SCOPE)
+    all_targets_compile_definitions("-DDEBUG") 
+
+    all_targets_compile_property("${COMMON_DEBUG_FLAGS}")
 
     #add clang-specific debugging flags
     #note: clang with apple modifications is named AppleClang (which will fail STREQUAL "Clang")
@@ -35,51 +54,22 @@ function(EnableDebugWarnings)
     #see http://stackoverflow.com/questions/10046114/in-cmake-how-can-i-test-if-the-compiler-is-clang
     if(("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang") AND NOT ${APPLE})
         message("Building with clang on a non-Apple machine.  Enabling -faddress=sanitize.")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CLANG_SANITIZE_ADDRESS_FLAG}" PARENT_SCOPE)
+        all_targets_compile_property("${CLANG_SANITIZE_ADDRESS_FLAG}")
     endif()
 endfunction()
 
-if((${CMAKE_BUILD_TYPE} STREQUAL "DEBUG") OR (${CMAKE_BUILD_TYPE} STREQUAL "Debug"))
-    message("Building in debug mode without warnings.")
-    message("To enable warnings, pass -DCMAKE_BUILD_TYPE=DebugWithWarnings")
-    #see http://stackoverflow.com/questions/5352074/how-to-create-a-c-define-for-a-certain-target-using-cmake
-    add_definitions( -DDEBUG )
-elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugWithWarnings")
-    message("Building in debug mode with warnings.")
-    message("To disable warnings, pass -DCMAKE_BUILD_TYPE=Debug")
-    EnableDebugWarnings()
-#GCC has an -Og option to enable optimizations that won't interfere with debugging
-elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugWithWarningsOptimized")
-    EnableDebugWarnings()
-    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        message("GNU compiler detected, building in optimized debug mode with warnings.")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_OPTIMIZE_DEBUG}")
-    else()
-        message("WARNING: COMPILER IS NOT GNU" WARNING)
-        message("CANNOT BUILD IN OPTIMIZED DEBUG MODE!" WARNING)
-        message("BUILDING IN DebugWithWarnings MODE!" WARNING)
-    endif()
-else()
-    message("Not building in debug mode.")
-    #disables assertions
-    #see http://stackoverflow.com/questions/5354314/how-to-completely-disable-assertion
-    #mandated by POSIX
-    add_definitions( -DNDEBUG )
-endif()
-
-add_library(ant_farm_lib ${SRC})
+add_library(${MAIN_TARGET} ${SRC})
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
 
-set(TESTS_EXE "tests")
 
 #add google test
 #gtest is directly checked into the repository to reduce build script complexity
 #see http://stackoverflow.com/questions/9689183/cmake-googletest
 #builds gtest in a subdirectory of the binary dir
 add_subdirectory("${CMAKE_SOURCE_DIR}/lib/gtest-1.7.0" ${CMAKE_BINARY_DIR}/gtest-bin)
-set_target_properties(gtest PROPERTIES COMPILE_FLAGS "-DCMAKE_CXX_FLAGS ")
+#set_target_properties(gtest PROPERTIES COMPILE_FLAGS "-DCMAKE_CXX_FLAGS ")
 
 #find test sources
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
@@ -91,18 +81,44 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
-add_executable(${TESTS_EXE} ${TESTS_SRC})
+add_executable(${TEST_TARGET} ${TESTS_SRC})
 
 
 #store the user-specified CXX flags (determined by build type, e.g. Debug, DebugWithWarnings, etc.)
 #we're wiping user-specified CXX flags because we don't want to build gtest with warnings--it will flood the terminal and is not helpful
-set(ANTFARMLIB_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS "${DEFAULT_CXX_FLAGS}")
 #add_custom_target(gtest_dummy_target ALL)
 #add_dependencies(gtest_dummy_target gtest)
 #done building gtest, reset flags
-set(CMAKE_CXX_FLAGS "${ANTFARMLIB_CXX_FLAGS}")
 
-target_link_libraries(${TESTS_EXE} gtest gtest_main)
 
-target_link_libraries(${TESTS_EXE} ant_farm_lib)
+if((${CMAKE_BUILD_TYPE} STREQUAL "DEBUG") OR (${CMAKE_BUILD_TYPE} STREQUAL "Debug"))
+    message("Building in debug mode without warnings.")
+    message("To enable warnings, pass -DCMAKE_BUILD_TYPE=DebugWithWarnings")
+    #see http://stackoverflow.com/questions/5352074/how-to-create-a-c-define-for-a-certain-target-using-cmake
+    all_targets_compile_definitions("-DDEBUG") 
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugWithWarnings")
+    message("Building in debug mode with warnings.")
+    message("To disable warnings, pass -DCMAKE_BUILD_TYPE=Debug")
+    EnableDebugWarnings()
+#GCC has an -Og option to enable optimizations that won't interfere with debugging
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "DebugWithWarningsOptimized")
+    EnableDebugWarnings()
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+        message("GNU compiler detected, building in optimized debug mode with warnings.")
+        all_targets_compile_property("${GCC_OPTIMIZE_DEBUG}")
+    else()
+        message("WARNING: COMPILER IS NOT GNU" WARNING)
+        message("CANNOT BUILD IN OPTIMIZED DEBUG MODE!" WARNING)
+        message("BUILDING IN DebugWithWarnings MODE!" WARNING)
+    endif()
+else()
+    message("Not building in debug mode.")
+    #disables assertions
+    #see http://stackoverflow.com/questions/5354314/how-to-completely-disable-assertion
+    #mandated by POSIX
+    all_targets_compile_definitions("-DNDEBUG")
+endif()
+
+target_link_libraries(${TEST_TARGET} gtest gtest_main)
+
+target_link_libraries(${TEST_TARGET} ant_farm_lib)
