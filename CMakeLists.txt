@@ -20,10 +20,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 #add a property to both the main library and the test target
 function(all_targets_compile_property)
     #see http://stackoverflow.com/questions/5096881/does-set-target-properties-in-cmake-override-cmake-cxx-flags 
-    foreach(this_flag IN ${ARGN})
-        target_compile_options(${MAIN_TARGET} PRIVATE ${this_flag})
-        target_compile_options(${TEST_TARGET} PRIVATE ${this_flag})
-    endforeach()
+    target_compile_options(${MAIN_TARGET} PRIVATE ${ARGN})
+    target_compile_options(${TEST_TARGET} PRIVATE ${ARGN})
 endfunction()
 
 function(all_targets_compile_definitions def)
@@ -46,7 +44,7 @@ set(GCC_OPTIMIZE_DEBUG "-Og")
 function(EnableDebugWarnings)
     all_targets_compile_definitions("-DDEBUG") 
 
-    all_targets_compile_property("${COMMON_DEBUG_FLAGS}")
+    all_targets_compile_property(${COMMON_DEBUG_FLAGS})
 
     #add clang-specific debugging flags
     #note: clang with apple modifications is named AppleClang (which will fail STREQUAL "Clang")
