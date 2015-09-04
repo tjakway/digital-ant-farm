@@ -29,7 +29,6 @@ endfunction()
 #divide debug fields into common (i.e. non compiler-specific) debug flags, GCC-specific flags and clang-specific flags
 ########################################
 #cmake list of flags
-#XXX--NOT A STRING!  HAVE TO LOOP THROUGH IT!
 set(COMMON_DEBUG_FLAGS -g -Wall -Wextra -Wundef -Wcast-qual -Wconversion -Wformat=2 -Wshadow -ftrapv -Wuninitialized -Winit-self -Wcast-align -Wwrite-strings)
 
 #Apple LLVM version 6.1.0 (clang-602.0.53) (based on LLVM 3.6.0svn) doesn't support -faddress=sanitize
@@ -60,7 +59,7 @@ add_library(${MAIN_TARGET} ${SRC})
 
 
 #add google test
-#gtest is directly checked into the repository to reduce build script complexity
+#gtest is directly checked into this repository to reduce build script complexity
 #see http://stackoverflow.com/questions/9689183/cmake-googletest
 #builds gtest in a subdirectory of the binary dir
 add_subdirectory("${CMAKE_SOURCE_DIR}/lib/gtest-1.7.0" ${CMAKE_BINARY_DIR}/gtest-bin)
