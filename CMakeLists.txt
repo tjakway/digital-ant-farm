@@ -8,9 +8,6 @@ include_directories("${CMAKE_SOURCE_DIR}/include")
 set(MAIN_TARGET "ant_farm_lib")
 set(TEST_TARGET "tests")
 
-#store CXX flags so we can use them to build gtest without any warnings we already set
-set(DEFAULT_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
 FILE(GLOB SRC src/*.cpp src/*.h)
 
@@ -67,27 +64,23 @@ add_library(${MAIN_TARGET} ${SRC})
 #see http://stackoverflow.com/questions/9689183/cmake-googletest
 #builds gtest in a subdirectory of the binary dir
 add_subdirectory("${CMAKE_SOURCE_DIR}/lib/gtest-1.7.0" ${CMAKE_BINARY_DIR}/gtest-bin)
-#set_target_properties(gtest PROPERTIES COMPILE_FLAGS "-DCMAKE_CXX_FLAGS ")
+set(ANTFLIB_GTEST_OPTIONS -Wp,-w -w)
+target_compile_options(gtest PRIVATE ${ANTFLIB_GTEST_OPTIONS})
+target_compile_options(gtest_main PRIVATE ${ANTFLIB_GTEST_OPTIONS})
 
 #find test sources
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
 FILE(GLOB TESTS_SRC test/*.cpp test/*.h)
 
-add_definitions( -DTESTING )
 
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-include_directories(${GTEST_INCLUDE_DIRS})
+
+include_directories(SYSTEM ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(${TEST_TARGET} ${TESTS_SRC})
 
-
-#store the user-specified CXX flags (determined by build type, e.g. Debug, DebugWithWarnings, etc.)
-#we're wiping user-specified CXX flags because we don't want to build gtest with warnings--it will flood the terminal and is not helpful
-#add_custom_target(gtest_dummy_target ALL)
-#add_dependencies(gtest_dummy_target gtest)
-#done building gtest, reset flags
-
+all_targets_compile_definitions("-DTESTING" )
 
 if((${CMAKE_BUILD_TYPE} STREQUAL "DEBUG") OR (${CMAKE_BUILD_TYPE} STREQUAL "Debug"))
     message("Building in debug mode without warnings.")
