@@ -22,10 +22,21 @@ private:
 
     std::thread *backendThread;
 
-    void backendThreadProc();
+    /** the thread function should be a static method to prevent it from running
+     *  before AsyncBackendQueue is done being constructed 
+     *  no need to declare this as a friend function, static methods have access
+     *  to class internals but no this pointer, see 
+     *  http://stackoverflow.com/questions/8685786/declaring-c-static-member-functions-as-friends-of-the-class-in-which-it-reside*/
+    static void backendThreadProc(AsyncBackendQueue*);
+
+protected:
+    /** need to declare this class abstract or we can't call processIO in 
+     * backendThreadProc because it will complain this class doesn't provide an implementation*/
+    virtual void processIO(std::shared_ptr<Grid>) = 0;
 
 public:
     AsyncBackendQueue();
+    virtual ~AsyncBackendQueue();
     virtual void postIO(std::shared_ptr<Grid>);
 };
 

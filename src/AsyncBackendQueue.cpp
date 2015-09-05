@@ -1,19 +1,38 @@
 #include "AsyncBackendQueue.h"
 
-void AsyncBackendQueue::backendThreadProc()
+void AsyncBackendQueue::backendThreadProc(AsyncBackendQueue *asyncBackendQueue)
 {
+    std::unique_lock<std::mutex> lock(asyncBackendQueue->queueMutex);
 
+    //sleep until we have something to draw
+    while(asyncBackendQueue->genDrawList.empty())
+    {
+        asyncBackendQueue->queueCond.wait(lock);
+    }
+
+    //draw events in the order they're added to the queue
+    std::shared_ptr<Grid> oldestEvent = asyncBackendQueue->genDrawList.back();
+    //delete the item we just fetched
+    asyncBackendQueue->genDrawList.pop_back(); 
+    
+
+    asyncBackendQueue->processIO(oldestEvent);
 }
 
 AsyncBackendQueue::AsyncBackendQueue()
 {
-    //instead of making the backend thread a field of AsyncBackendQueue, could make it a separate function in an anonymous namespace that takes as arguments anything it needs to do its job
-    //could even declare it as a friend function if it really needed to access private AsyncBackendQueue fields and methods
-    //this would prevent the thread from running before AsyncBackendQueue was fully constructed
-    backendThread = new std::thread(&AsyncBackendQueue::backendThreadProc);
+    backendThread = new std::thread(AsyncBackendQueue::backendThreadProc, this);
+}
+
+AsyncBackendQueue::~AsyncBackendQueue()
+{
+    delete backendThread;
 }
 
 void AsyncBackendQueue::postIO(std::shared_ptr<Grid> postedGrid)
 {
+    //lock the deque and add the draw event to it
+    std::unique_lock<std::mutex> lock(queueMutex);
 
+    genDrawList.push_back(postedGrid);
 }
