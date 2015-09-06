@@ -8,6 +8,7 @@
 class GameRunner
 {
 private:
+    /** constants for numGenHistory */
     static const int UNLIMITED_HISTORY,
                      NO_HISTORY;
 
@@ -16,7 +17,7 @@ private:
     Grid *currentGen;
     /** the game's starting configuration
      *  because Conway's Game of Life is a 0-player game it's deterministic and the
-     *  entire game can be recreated (very slowly) by just replaying the game */
+     *  entire game can be recreated (very slowly) by just replaying it. */
     Grid *seedGrid;
 
     /** counter for generations elapsed*/
