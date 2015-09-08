@@ -1,4 +1,4 @@
-#include "GameRunner.h"
+#include "GameRunner.hpp"
 
 using namespace jakway_antf;
 

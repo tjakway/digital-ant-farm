@@ -7,7 +7,7 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "Grid.h"
+#include "Grid.hpp"
 
 namespace jakway_antf
 {

@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Grid.h"
+#include "Grid.hpp"
 
 namespace jakway_antf
 {

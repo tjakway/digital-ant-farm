@@ -1,7 +1,7 @@
-#include "Grid.h"
+#include "Grid.hpp"
 
 #include <cassert>
-#include "Tile.h"
+#include "Tile.hpp"
 
 #include <stdexcept>
 
