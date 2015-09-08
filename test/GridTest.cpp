@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include "Grid.h"
-#include "Tile.h"
-#include "Util.h"
+#include "Grid.hpp"
+#include "Tile.hpp"
+#include "Util.hpp"
 #include <list>
 
 //google tests needs tests to be declared in the same namespace
