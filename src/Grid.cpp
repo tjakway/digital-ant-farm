@@ -9,6 +9,8 @@
 #include <iostream>
 #endif
 
+using namespace jakway_antf;
+
 namespace
 {
 #ifdef DEBUG

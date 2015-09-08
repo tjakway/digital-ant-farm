@@ -7,6 +7,10 @@
 #include "gtest/gtest.h"
 #endif
 
+
+namespace jakway_antf
+{
+
 /**
  * TODO: handle grid resizing and tile setting
  */
@@ -58,5 +62,7 @@ public:
      */
     static void clearGrid(Grid*);
 };
+
+}
 
 #endif

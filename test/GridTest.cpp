@@ -4,6 +4,10 @@
 #include "Util.h"
 #include <list>
 
+//google tests needs tests to be declared in the same namespace
+namespace jakway_antf
+{
+
 TEST(GridTests, testCtor)
 {
     const int width=10, height=10;
@@ -119,4 +123,6 @@ TEST(GridTests, testDoubleSetting)
        grid.setTile(doubleSetPos[0], doubleSetPos[1], tileState);
        ASSERT_TRUE(grid.getTile(doubleSetPos[0], doubleSetPos[1]) == tileState);
    }
+}
+
 }

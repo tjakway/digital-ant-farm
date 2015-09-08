@@ -5,6 +5,9 @@
 
 #include "Grid.h"
 
+namespace jakway_antf
+{
+
 /**
  * pure virtual interface all backends must derive from
  * backends might include printing a log, displaying the game on the screen, writing to a video file, etc.
@@ -20,3 +23,5 @@ public:
 };
 
 #endif
+
+}

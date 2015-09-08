@@ -9,6 +9,9 @@
 
 #include "Grid.h"
 
+namespace jakway_antf
+{
+
 class AsyncBackendQueue
 {
     //don't implement processIO--leave pure virtual
@@ -39,5 +42,7 @@ public:
     virtual ~AsyncBackendQueue();
     virtual void postIO(std::shared_ptr<Grid>);
 };
+
+}
 
 #endif

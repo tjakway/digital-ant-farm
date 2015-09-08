@@ -1,5 +1,7 @@
 #include "AsyncBackendQueue.h"
 
+using namespace jakway_antf;
+
 void AsyncBackendQueue::backendThreadProc(AsyncBackendQueue *asyncBackendQueue)
 {
     std::unique_lock<std::mutex> lock(asyncBackendQueue->queueMutex);

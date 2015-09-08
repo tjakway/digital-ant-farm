@@ -2,6 +2,9 @@
 
 #include <random>
 
+namespace jakway_antf
+{
+
 namespace {
     //mersenne 
     //see http://stackoverflow.com/questions/5008804/generating-random-integer-from-a-range
@@ -13,4 +16,6 @@ int getRandInRangeInclusive(int lower, int upper)
 {
     std::uniform_int_distribution<int> distribution(lower, upper);
     return distribution(mersenne_rng);
+}
+
 }

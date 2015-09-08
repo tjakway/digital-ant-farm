@@ -1,5 +1,7 @@
 #include "GameRunner.h"
 
+using namespace jakway_antf;
+
 //initialize static fields
 const int GameRunner::UNLIMITED_HISTORY = 0,
           GameRunner::NO_HISTORY = -1;

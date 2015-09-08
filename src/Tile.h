@@ -8,6 +8,10 @@
 #define TILE_DEAD false
 #define TILE_ALIVE true
 
+
+namespace jakway_antf
+{
+
 /**
  * Immutable class for represeting one tile on the board
  * contains information about its position and whether its neighbors are alive
@@ -43,5 +47,7 @@ class TileException : std::logic_error
         TileException(const std::string& what_arg)
             : logic_error(what_arg) {}
 };
+
+}
 
 #endif

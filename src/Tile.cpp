@@ -1,5 +1,7 @@
 #include "Tile.h"
 
+using namespace jakway_antf;
+
 int Tile::getX()
 {
     return x;

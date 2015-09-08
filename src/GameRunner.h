@@ -5,6 +5,9 @@
 
 #include "Grid.h"
 
+namespace jakway_antf
+{
+
 class GameRunner
 {
 private:
@@ -38,5 +41,7 @@ public:
     void runGeneration();
 
 };
+
+}
 
 #endif
