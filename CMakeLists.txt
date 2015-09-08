@@ -52,7 +52,22 @@ function(EnableDebugWarnings)
     endif()
 endfunction()
 
-add_library(${MAIN_TARGET} ${SRC})
+#-----------------------------------------------------------------------
+#run ctags to generate tagfile
+#see http://stackoverflow.com/questions/9827208/run-a-shell-command-ctags-in-cmake-and-make
+#do NOT run on Windows or won't be able to find the ctags executable
+if(NOT WIN32)
+    set_source_files_properties( ctags.output PROPERTIES GENERATED true)
+    #see http://stackoverflow.com/questions/1932396/c-source-tagging for explanation of ctags options
+    add_custom_command ( OUTPUT ctags.output
+        COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/test
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
+
+    add_library(${MAIN_TARGET} ${SRC} ctags.output)
+else()
+    add_library(${MAIN_TARGET} ${SRC})
+endif()
+#-----------------------------------------------------------------------
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
