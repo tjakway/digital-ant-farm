@@ -4,11 +4,11 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 
-#include "Backend.hpp"
+#include "DisplayBackend.hpp"
 
 namespace jakway_antf
 {
-class NativeWindow
+class NativeWindow : public DisplayBackend
 {
 private:
    static const int DEFAULT_WIDTH, DEFAULT_HEIGHT; 

@@ -4,10 +4,15 @@
 #include <vector>
 
 #include "Grid.hpp"
+#include "Backend.hpp"
+#include "DisplayBackend.hpp"
 
 namespace jakway_antf
 {
 
+/**
+ * Coordinates the game and serves as an interface to backends
+ */
 class GameRunner
 {
 private:
@@ -32,13 +37,21 @@ private:
      */
     long numGenHistory;
 
+    /** BACKENDS */
+    DisplayBackend *displayBackend;
+    Backend        *imageBackend;
+
 public:
     /**
      * input: starting state of the board
      */
     GameRunner(Grid* seed);
     ~GameRunner();
+    
     void runGeneration();
+    
+    /** hook the display backend into main() */
+    int beginEventLoop();
 
 };
 

@@ -19,9 +19,10 @@ protected:
 
 public:
     virtual void postIO(std::shared_ptr<Grid>) = 0;
+    virtual ~Backend() {}
 
 };
 
-#endif
-
 }
+
+#endif

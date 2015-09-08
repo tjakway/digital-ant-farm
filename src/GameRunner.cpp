@@ -9,11 +9,13 @@ const int GameRunner::UNLIMITED_HISTORY = 0,
 GameRunner::GameRunner(Grid* seed)
 {
     currentGen = new Grid(*seed);
+    //XXX: initialize Backend pointers to the desired polymorphic types
 }
 
 GameRunner::~GameRunner()
 {
-
+    delete displayBackend;
+    delete imageBackend;
 }
 
 void GameRunner::runGeneration()
@@ -21,3 +23,5 @@ void GameRunner::runGeneration()
     //copy the current gen, mutate it, add the
 
 }
+
+
