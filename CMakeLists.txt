@@ -3,6 +3,11 @@ project(digital_ant_farm)
 #target_compile_options and add_compile_options only available since cmake 2.8.12
 cmake_minimum_required(VERSION 2.8.12)
 
+#need FLTK for GUI
+set(FLTK_SKIP_FLUID 1)
+find_package(FLTK REQUIRED)
+include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
+
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
 set(MAIN_TARGET "ant_farm_lib")
@@ -69,6 +74,9 @@ else()
 endif()
 #-----------------------------------------------------------------------
 
+#link against FLTK
+target_link_libraries(${MAIN_TARGET} ${FLTK_LIBRARIES})
+
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
 
@@ -127,3 +135,5 @@ endif()
 target_link_libraries(${TEST_TARGET} gtest gtest_main)
 
 target_link_libraries(${TEST_TARGET} ant_farm_lib)
+
+target_link_libraries(${TEST_TARGET} ${FLTK_LIBRARIES})
