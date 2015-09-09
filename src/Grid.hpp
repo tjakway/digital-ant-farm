@@ -39,6 +39,24 @@ private:
 
     std::deque<bool>* getRow(unsigned int x, unsigned int y, std::deque<std::deque<bool>*> paramTiles);
 
+    /** custom iterator*/
+    class GridIterator : std::iterator<std::input_iterator_tag, Grid>
+    {
+    private:
+        Grid* grid;
+        int pos;
+
+        int getMaxPos();
+        bool* getTile();
+    public:
+        GridIterator(Grid* pGrid, int pPos) : grid(pGrid), pos(pPos) {}
+        GridIterator(const GridIterator& it) : grid(it.grid), pos(it.pos) {}
+        GridIterator& operator++();
+        bool operator==(const GridIterator& other);
+        bool operator!=(const GridIterator& other);
+        bool& operator*();        
+    };
+
 public:
     /** copy constructor */
     Grid(const Grid& other);
@@ -61,6 +79,8 @@ public:
      * can also just reconstruct the grid object, but this saves a memory allocation
      */
     static void clearGrid(Grid*);
+
+
 };
 
 }

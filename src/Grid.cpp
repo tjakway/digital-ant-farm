@@ -1,9 +1,9 @@
 #include "Grid.hpp"
 
 #include <cassert>
-#include "Tile.hpp"
-
 #include <stdexcept>
+
+#include "Tile.hpp"
 
 #ifdef DEBUG
 #include <iostream>
@@ -194,4 +194,50 @@ void Grid::clearGrid(Grid* grid)
     }   
     
     assert(!grid->touchingEdges());
+}
+
+//********************************
+//GRID ITERATOR
+//********************************
+
+int Grid::GridIterator::getMaxPos()
+{
+    return grid->getWidth() * grid->getHeight();
+}
+
+/**
+ * this does the heavy lifting of the iterator
+ * get the bool at GridIterator::pos or throw std::out_of_range if pos is invalid
+ */
+bool* Grid::GridIterator::getTile()
+{
+    if(pos < 0 || pos > getMaxPos())
+    {
+        throw std::out_of_range("Exception in GridIterator: out of range in getTile()!");
+    }
+    
+    const int numRows = grid->tiles.size(),
+            row = pos / numRows, //take advantage of truncating integer division
+            column = pos % numRows;
+    std::deque<bool>* rowDeque = grid->tiles.at(row);
+    return &rowDeque->at(column);
+}
+
+/**
+ * only true if both iterators point to the same Grid and are at the same position
+ */
+bool Grid::GridIterator::operator==(const GridIterator& other)
+{
+    return other.grid == grid && other.pos == pos;
+}
+
+bool Grid::GridIterator::operator!=(const GridIterator& other)
+{
+    //implement in terms of ==
+    return !(*this == other);
+}
+
+bool& Grid::GridIterator::operator*()
+{
+    return *getTile();
 }
