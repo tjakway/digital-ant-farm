@@ -48,4 +48,44 @@ TEST(GridIteratorTests, testIteratorSyntax)
    }
 }
 
+/**
+ * make sure we actually iterate through every tile
+ */
+TEST(GridIteratorTests, testIteratorCount)
+{
+    Grid grid(width, height);
+    
+    //loop through the grid and make sure we iterate the correct number of times
+    int i = 0;
+    for(bool tile : grid)
+    {
+        i++;
+    } 
+
+    ASSERT_TRUE(i == grid.getSize());
+}
+
+TEST(GridIteratorTests, testOutOfBounds)
+{
+
+}
+
+/**
+ * try iterating through a very large grid
+ */
+TEST(GridIteratorTests, testHugeGrid)
+{
+
+}
+
+//tests iterating over non-square grids
+TEST(GridIteratorTests, testTallGrid)
+{
+
+}
+TEST(GridIteratorTests, testWideGrid)
+{
+
+}
+
 }

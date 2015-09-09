@@ -59,6 +59,8 @@ public:
     int getWidth();
     int getHeight();
 
+    int getSize();
+
     /**
      * sets the passed Grid to all TILE_DEAD
      * can also just reconstruct the grid object, but this saves a memory allocation

@@ -44,6 +44,11 @@ int Grid::getHeight()
     return tiles.size();
 }
 
+int Grid::getSize()
+{
+    return getWidth() * getHeight();
+}
+
 void Grid::expandGrid()
 {
     //check the grid is the right shape before and after we modify it
@@ -140,6 +145,7 @@ void Grid::runGeneration()
 
     assert(!touchingEdges());
 
+    //XXX
 }
 
 /**
@@ -200,6 +206,9 @@ void Grid::clearGrid(Grid* grid)
 //GRID ITERATOR
 //********************************
 
+/**
+ * XXX: is this an off-by-1 error?  I think the last valid position is actually size - 1
+ */
 int Grid::GridIterator::getMaxPos(Grid* grid)
 {
     return grid->getWidth() * grid->getHeight();
