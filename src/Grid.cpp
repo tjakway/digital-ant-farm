@@ -200,7 +200,7 @@ void Grid::clearGrid(Grid* grid)
 //GRID ITERATOR
 //********************************
 
-int Grid::GridIterator::getMaxPos()
+int Grid::GridIterator::getMaxPos(Grid* grid)
 {
     return grid->getWidth() * grid->getHeight();
 }
@@ -211,7 +211,7 @@ int Grid::GridIterator::getMaxPos()
  */
 bool* Grid::GridIterator::getTile()
 {
-    if(pos < 0 || pos > getMaxPos())
+    if(pos < 0 || pos > getMaxPos(grid))
     {
         throw std::out_of_range("Exception in GridIterator: out of range in getTile()!");
     }
@@ -221,6 +221,25 @@ bool* Grid::GridIterator::getTile()
             column = pos % numRows;
     std::deque<bool>* rowDeque = grid->tiles.at(row);
     return &rowDeque->at(column);
+}
+
+/**
+ * prefix increment operator
+ */
+Grid::GridIterator& Grid::GridIterator::operator++()
+{
+    pos++;
+    return *this;
+}
+
+/**
+ * postfix increment operator
+ */
+Grid::GridIterator Grid::GridIterator::operator++(int)
+{
+    GridIterator tmp(*this);
+    operator++();
+    return tmp;
 }
 
 /**
@@ -240,4 +259,16 @@ bool Grid::GridIterator::operator!=(const GridIterator& other)
 bool& Grid::GridIterator::operator*()
 {
     return *getTile();
+}
+
+
+Grid::iterator Grid::begin()
+{
+    return Grid::GridIterator(this, 0);
+}
+
+Grid::iterator Grid::end()
+{
+    return Grid::GridIterator(this, Grid::GridIterator::getMaxPos(this));
+
 }

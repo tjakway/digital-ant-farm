@@ -12,7 +12,7 @@ namespace jakway_antf
 {
 
 /**
- * TODO: handle grid resizing and tile setting
+ * TODO: handle grid resizing
  */
 class Grid
 {
@@ -22,6 +22,8 @@ class Grid
     FRIEND_TEST(GridTests, testTouchingEdges);
     FRIEND_TEST(GridTests, testOutOfBounds);
     FRIEND_TEST(GridTests, testDoubleSetting);
+
+    FRIEND_TEST(GridIteratorTests, iteratorSanityTest);
 #endif
 
 private:
@@ -39,23 +41,6 @@ private:
 
     std::deque<bool>* getRow(unsigned int x, unsigned int y, std::deque<std::deque<bool>*> paramTiles);
 
-    /** custom iterator*/
-    class GridIterator : std::iterator<std::input_iterator_tag, Grid>
-    {
-    private:
-        Grid* grid;
-        int pos;
-
-        int getMaxPos();
-        bool* getTile();
-    public:
-        GridIterator(Grid* pGrid, int pPos) : grid(pGrid), pos(pPos) {}
-        GridIterator(const GridIterator& it) : grid(it.grid), pos(it.pos) {}
-        GridIterator& operator++();
-        bool operator==(const GridIterator& other);
-        bool operator!=(const GridIterator& other);
-        bool& operator*();        
-    };
 
 public:
     /** copy constructor */
@@ -80,7 +65,33 @@ public:
      */
     static void clearGrid(Grid*);
 
+    /** custom iterator*/
+    class GridIterator : std::iterator<std::input_iterator_tag, Grid>
+    {
+    private:
+        Grid* grid;
+        int pos;
 
+        bool* getTile();
+    public:
+        GridIterator(Grid* pGrid, int pPos) : grid(pGrid), pos(pPos) {}
+        GridIterator(const GridIterator& it) : grid(it.grid), pos(it.pos) {}
+        GridIterator& operator++();
+        /** the postfix increment operator takes a dummy int value to distinguish it from
+         * the prefix increment operator
+         * see http://stackoverflow.com/questions/15244094/c-overloading-for-both-pre-and-post-increment*/
+        GridIterator operator++(int);
+        bool operator==(const GridIterator& other);
+        bool operator!=(const GridIterator& other);
+        bool& operator*();        
+
+        static int getMaxPos(Grid*);
+    };
+    typedef GridIterator iterator;
+
+    /**iterator methods*/
+    iterator begin();
+    iterator end();
 };
 
 }
