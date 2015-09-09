@@ -87,6 +87,8 @@ public:
 
         static int getMaxPos(Grid*);
     };
+    /** allows for more uniform and predictable syntax
+     * access as Grid::iterator */
     typedef GridIterator iterator;
 
     /**iterator methods*/

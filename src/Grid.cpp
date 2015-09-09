@@ -261,7 +261,6 @@ bool& Grid::GridIterator::operator*()
     return *getTile();
 }
 
-
 Grid::iterator Grid::begin()
 {
     return Grid::GridIterator(this, 0);
