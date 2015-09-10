@@ -211,7 +211,7 @@ void Grid::clearGrid(Grid* grid)
  */
 int Grid::GridIterator::getMaxPos(Grid* grid)
 {
-    return grid->getWidth() * grid->getHeight();
+    return grid->getSize();
 }
 
 /**
@@ -227,7 +227,7 @@ bool* Grid::GridIterator::getTile()
     
     const int numRows = grid->tiles.size(),
             row = pos / numRows, //take advantage of truncating integer division
-            column = pos % numRows;
+            column = pos % grid->tiles.at(row)->size();
     std::deque<bool>* rowDeque = grid->tiles.at(row);
     return &rowDeque->at(column);
 }
@@ -278,5 +278,4 @@ Grid::iterator Grid::begin()
 Grid::iterator Grid::end()
 {
     return Grid::GridIterator(this, Grid::GridIterator::getMaxPos(this));
-
 }

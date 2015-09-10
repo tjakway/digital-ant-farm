@@ -67,7 +67,20 @@ TEST(GridIteratorTests, testIteratorCount)
 
 TEST(GridIteratorTests, testOutOfBounds)
 {
+    Grid grid(width, height);
 
+    //an exception out to be thrown when dereferencing an iterator outside of the grid
+    bool exceptionThrown = false;
+    auto it = grid.end();
+    try
+    {
+        *it;
+    }
+    catch(std::out_of_range)
+    {
+       exceptionThrown = true; 
+    }
+    ASSERT_TRUE(exceptionThrown);
 }
 
 /**
@@ -75,13 +88,31 @@ TEST(GridIteratorTests, testOutOfBounds)
  */
 TEST(GridIteratorTests, testHugeGrid)
 {
+    const int hugeWidth = 1000, hugeHeight = 1000;
+    Grid hugeGrid(hugeWidth, hugeHeight);
 
+    ASSERT_TRUE(hugeGrid.getSize() == (hugeWidth * hugeHeight));
+    int i = 0;
+    for(auto n : hugeGrid)
+    {
+        i++;
+    }
+
+    ASSERT_TRUE(i == hugeGrid.getSize());
 }
 
 //tests iterating over non-square grids
 TEST(GridIteratorTests, testTallGrid)
 {
+    const int tallWidth = 488, tallHeight = 923;
+    Grid grid(tallWidth, tallHeight);
 
+    int i = 0;
+    for(auto n : grid)
+    {
+        i++;
+    }
+    ASSERT_TRUE(i == grid.getSize());
 }
 TEST(GridIteratorTests, testWideGrid)
 {
