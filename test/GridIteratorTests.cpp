@@ -116,7 +116,15 @@ TEST(GridIteratorTests, testTallGrid)
 }
 TEST(GridIteratorTests, testWideGrid)
 {
+    const int wideWidth = 873, wideHeight = 111;
+    Grid grid(wideWidth, wideHeight);
 
+    int i = 0;
+    for(auto n : grid)
+    {
+        i++;
+    }
+    ASSERT_TRUE(i == grid.getSize());
 }
 
 }

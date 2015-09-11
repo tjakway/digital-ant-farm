@@ -36,6 +36,7 @@ namespace
 
 int Grid::getWidth()
 {
+    assertGridIsRectangular(tiles);
     return tiles.front()->size();
 }
 
