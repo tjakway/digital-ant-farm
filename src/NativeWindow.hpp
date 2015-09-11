@@ -1,6 +1,10 @@
 #ifndef ANTF_NATIVEWINDOW_H
 #define ANTF_NATIVEWINDOW_H
 
+#ifdef TESTING
+#include "gtest/gtest.h"
+#endif
+
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 

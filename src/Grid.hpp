@@ -1,11 +1,11 @@
 #ifndef GRID_H
 #define GRID_H
 
-#include <deque>
-
 #ifdef TESTING
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #endif
+
+#include <deque>
 
 
 namespace jakway_antf
