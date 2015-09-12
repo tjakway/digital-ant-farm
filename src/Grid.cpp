@@ -169,7 +169,7 @@ std::deque<bool>* Grid::getRow(unsigned int x, unsigned int y, std::deque<std::d
     return selectedRow;
 }
 
-void Grid::setTile(unsigned int x, unsigned int y, bool alive)
+void Grid::setTile(int x, int y, bool alive)
 {
     std::deque<bool>* selectedRow = getRow(x, y, tiles);
 
@@ -177,7 +177,7 @@ void Grid::setTile(unsigned int x, unsigned int y, bool alive)
     (*selectedRow)[x] = alive;
 }
 
-bool Grid::getTile(unsigned int x, unsigned int y)
+bool Grid::getTile(int x, int y)
 {
     std::deque<bool>* selectedRow = getRow(x, y, tiles);
     return (*selectedRow)[x];
@@ -211,7 +211,7 @@ void Grid::clearGrid(Grid* grid)
  */
 int Grid::GridIterator::getMaxPos(Grid* grid)
 {
-    return grid->getSize() - 1;
+    return grid->getSize();
 }
 
 /**
@@ -232,7 +232,7 @@ bool* Grid::GridIterator::getTile()
           numRows = grid->getHeight(),
           whichRow = (nthItem / numRows) + 1, 
           //find which column
-          whichColumn = nthItem - ((whichRow) * grid->getWidth()),
+          whichColumn = nthItem - ((whichRow-1) * grid->getWidth()),
 
           //calculate (zero-based) indices
           rowIndex = whichRow - 1,

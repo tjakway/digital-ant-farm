@@ -53,8 +53,8 @@ public:
     /** mutate this grid into the next generation */
     void runGeneration();
 
-    void setTile(unsigned int x, unsigned int y, bool alive);
-    bool getTile(unsigned int x, unsigned int y);
+    void setTile(int x, int y, bool alive);
+    bool getTile(int x, int y);
 
     int getWidth();
     int getHeight();
