@@ -211,7 +211,7 @@ void Grid::clearGrid(Grid* grid)
  */
 int Grid::GridIterator::getMaxPos(Grid* grid)
 {
-    return grid->getSize();
+    return grid->getSize() - 1;
 }
 
 /**
@@ -225,11 +225,20 @@ bool* Grid::GridIterator::getTile()
         throw std::out_of_range("Exception in GridIterator: out of range in getTile()!");
     }
     
-    const int numRows = grid->tiles.size(),
-            row = pos / numRows, //take advantage of truncating integer division
-            column = pos % grid->tiles.at(row)->size();
-    std::deque<bool>* rowDeque = grid->tiles.at(row);
-    return &rowDeque->at(column);
+    //pos is 0-indexed, we really want the item at pos + 1
+    const int nthItem = pos + 1,
+          //find which row
+          //NOT zero-indexed
+          numRows = grid->getHeight(),
+          whichRow = (nthItem / numRows) + 1, 
+          //find which column
+          whichColumn = nthItem - ((whichRow) * grid->getWidth()),
+
+          //calculate (zero-based) indices
+          rowIndex = whichRow - 1,
+          columnIndex = whichColumn - 1;
+    std::deque<bool>* rowDeque = grid->tiles.at(rowIndex);
+    return &rowDeque->at(columnIndex);
 }
 
 /**
