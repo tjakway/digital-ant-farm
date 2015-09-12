@@ -39,7 +39,7 @@ private:
      */
     bool touchingEdges();
 
-    std::deque<bool>* getRow(unsigned int x, unsigned int y, std::deque<std::deque<bool>*> paramTiles);
+    std::deque<bool>* getRow(int x, int y, std::deque<std::deque<bool>*> paramTiles);
 
 
 public:
