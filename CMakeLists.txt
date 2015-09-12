@@ -3,6 +3,11 @@ project(digital_ant_farm)
 #target_compile_options and add_compile_options only available since cmake 2.8.12
 cmake_minimum_required(VERSION 2.8.12)
 
+#set the default build type as "Release"
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build: Debug, Release, DebugWithWarnings, or DebugWithWarningsOptimized." FORCE)
+endif()
+
 #need FLTK for GUI
 set(FLTK_SKIP_FLUID 1)
 find_package(FLTK REQUIRED)
