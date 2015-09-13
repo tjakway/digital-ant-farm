@@ -208,14 +208,6 @@ void Grid::clearGrid(Grid* grid)
 //********************************
 
 /**
- * XXX: is this an off-by-1 error?  I think the last valid position is actually size - 1
- */
-int Grid::GridIterator::getMaxPos(Grid* grid)
-{
-    return grid->getSize();
-}
-
-/**
  * this does the heavy lifting of the iterator
  * get the bool at GridIterator::pos or throw std::out_of_range if pos is invalid
  */
@@ -233,7 +225,7 @@ bool* Grid::GridIterator::getTile()
     //use grid->getRow instead of getRow because we need a pointer to the actual bool in the grid so we can modify it if necessary
     //grid->getTile returns the bool value, which can't be modified
     std::deque<bool>* row = grid->getRow(xpos, ypos);
-    return &row->at(ypos);
+    return &row->at(xpos);
 }
 
 /**
@@ -241,7 +233,15 @@ bool* Grid::GridIterator::getTile()
  */
 Grid::GridIterator& Grid::GridIterator::operator++()
 {
-    pos++;
+    //increment x then check if it went off the edge
+    //if so, move it back to the leftmost side of the grid and shift to the next row
+    xpos++;
+    if(xpos >= grid->getWidth())
+    {
+        xpos = 0;
+        ypos++;
+    }
+
     return *this;
 }
 
@@ -277,10 +277,16 @@ bool& Grid::GridIterator::operator*()
 
 Grid::iterator Grid::begin()
 {
-    return Grid::GridIterator(this, 0);
+    return Grid::GridIterator(this, 0, 0);
 }
 
+/**
+ * returns an iterator pointing to the off-the-end element (i.e. returns the iterator that would follow the last valid iterator)
+ * should NOT be dereferenced
+ */
 Grid::iterator Grid::end()
 {
-    return Grid::GridIterator(this, Grid::GridIterator::getMaxPos(this));
+    //return xpos == 0, ypos == height because incrementing the last valid iterator will set xpos = 0 and increment ypos
+    //because xpos and ypos are 0-indexed, the ypos just after the last valid iterator is getHeight()
+    return Grid::GridIterator(this, 0, getHeight());
 }
