@@ -34,17 +34,17 @@ namespace
 #endif
 }
 
-int Grid::getWidth()
+POS_TYPE Grid::getWidth()
 {
     return tiles.front()->size();
 }
 
-int Grid::getHeight()
+POS_TYPE Grid::getHeight()
 {
     return tiles.size();
 }
 
-int Grid::getSize()
+POS_TYPE Grid::getSize()
 {
     return getWidth() * getHeight();
 }
@@ -55,7 +55,7 @@ void Grid::expandGrid()
 #ifdef DEBUG
     assertGridIsRectangular(tiles);
 #endif
-    const int newWidth = getWidth() + 2;
+    const POS_TYPE newWidth = getWidth() + 2;
 
     //add 1 tile to the beginning of each sublist (prepending a column)
     //add 1 tile to the end of each sublist (appending a column)
@@ -118,9 +118,10 @@ Grid::Grid(const Grid& other)
     //TODO: IMPLEMENT
 }
 
-Grid::Grid(const int width, const int height)
+Grid::Grid(const POS_TYPE width, const POS_TYPE height)
 {
-    for(int i = 0; i < height; i++)
+    //making i the same type is easier
+    for(POS_TYPE i = 0; i < height; i++)
     {
         //don't have to loop to add items to the list
         //this list CTOR will insert <width> number of bools all at once
@@ -152,7 +153,7 @@ void Grid::runGeneration()
  * return the selected row (corresponding to x) that contains the passed y value
  * will throw if out of bounds
  */
-std::deque<bool>* Grid::getRow(int x, int y, std::deque<std::deque<bool>*> paramTiles)
+std::deque<bool>* Grid::getRow(POS_TYPE x, POS_TYPE y, std::deque<std::deque<bool>*> paramTiles)
 {
     //subtract 1 because y is zero-indexed
     if(tiles.size()-1 < y)
@@ -169,7 +170,7 @@ std::deque<bool>* Grid::getRow(int x, int y, std::deque<std::deque<bool>*> param
     return selectedRow;
 }
 
-void Grid::setTile(int x, int y, bool alive)
+void Grid::setTile(POS_TYPE x, POS_TYPE y, bool alive)
 {
     std::deque<bool>* selectedRow = getRow(x, y, tiles);
 
@@ -177,7 +178,7 @@ void Grid::setTile(int x, int y, bool alive)
     (*selectedRow)[x] = alive;
 }
 
-bool Grid::getTile(int x, int y)
+bool Grid::getTile(POS_TYPE x, POS_TYPE y)
 {
     std::deque<bool>* selectedRow = getRow(x, y, tiles);
     return (*selectedRow)[x];
@@ -191,9 +192,9 @@ void Grid::clearGrid(Grid* grid)
     /**
      * could make this easier by writing a custom iterator for Grid
      */
-    for(int x = 0; x < grid->getWidth(); x++)
+    for(POS_TYPE x = 0; x < grid->getWidth(); x++)
     {
-        for(int y = 0; y < grid->getHeight(); y++)
+        for(POS_TYPE y = 0; y < grid->getHeight(); y++)
         {
             grid->setTile(x, y, TILE_DEAD);
         }
@@ -229,13 +230,25 @@ bool* Grid::GridIterator::getTile()
     const int nthItem = pos + 1,
           //find which row
           //NOT zero-indexed
-          numRows = grid->getHeight(),
-          whichRow = (nthItem / numRows) + 1, 
+          numRows = grid->getHeight();
+    int whichRow;
+          whichRow = (nthItem / numRows) + 1;
+
+    int tilesInPrecedingRows;
+    if(whichRow <= 1)
+    {
+        tilesInPrecedingRows = 0;
+    }
+    else
+    {
+        tilesInPrecedingRows =  nthItem - ((whichRow) * grid->getWidth());
+    }
           //find which column
-          whichColumn = nthItem - ((whichRow-1) * grid->getWidth()),
+//    const int whichColumn = nthItem - ((whichRow - 1) * grid->getWidth()),
+    const int whichColumn = nthItem - tilesInPrecedingRows;
 
           //calculate (zero-based) indices
-          rowIndex = whichRow - 1,
+   int       rowIndex = whichRow,
           columnIndex = whichColumn - 1;
     std::deque<bool>* rowDeque = grid->tiles.at(rowIndex);
     return &rowDeque->at(columnIndex);

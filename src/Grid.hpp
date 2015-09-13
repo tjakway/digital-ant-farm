@@ -7,6 +7,10 @@
 
 #include <deque>
 
+/**
+ * it's more correct to think of coordinates as their own type than as a particular kind of integer
+ */
+typedef unsigned int POS_TYPE;
 
 namespace jakway_antf
 {
@@ -39,27 +43,27 @@ private:
      */
     bool touchingEdges();
 
-    std::deque<bool>* getRow(int x, int y, std::deque<std::deque<bool>*> paramTiles);
+    std::deque<bool>* getRow(POS_TYPE x, POS_TYPE y, std::deque<std::deque<bool>*> paramTiles);
 
 
 public:
     /** copy constructor */
     Grid(const Grid& other);
 
-    Grid(const int width, const int height);
+    Grid(const POS_TYPE width, const POS_TYPE height);
 
     ~Grid();
 
     /** mutate this grid into the next generation */
     void runGeneration();
 
-    void setTile(int x, int y, bool alive);
-    bool getTile(int x, int y);
+    void setTile(POS_TYPE x, POS_TYPE y, bool alive);
+    bool getTile(POS_TYPE x, POS_TYPE y);
 
-    int getWidth();
-    int getHeight();
+    POS_TYPE getWidth();
+    POS_TYPE getHeight();
 
-    int getSize();
+    POS_TYPE getSize();
 
     /**
      * sets the passed Grid to all TILE_DEAD
@@ -72,12 +76,12 @@ public:
     {
     private:
         Grid* grid;
-        int pos;
+        POS_TYPE xpos, ypos;
 
         bool* getTile();
     public:
-        GridIterator(Grid* pGrid, int pPos) : grid(pGrid), pos(pPos) {}
-        GridIterator(const GridIterator& it) : grid(it.grid), pos(it.pos) {}
+        GridIterator(Grid* pGrid, POS_TYPE pX, POS_TYPE pY) : grid(pGrid), xpos(pX), ypos(pY) {}
+        GridIterator(const GridIterator& it) : grid(it.grid), xpos(it.xpos), ypos(it.ypos) {}
         GridIterator& operator++();
         /** the postfix increment operator takes a dummy int value to distinguish it from
          * the prefix increment operator
