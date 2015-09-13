@@ -4,20 +4,23 @@
 #include "Util.hpp"
 #include <list>
 
+namespace
+{
+    const POS_TYPE width=10, height=10;
+}
+
 //google tests needs tests to be declared in the same namespace
 namespace jakway_antf
 {
 
 TEST(GridTests, testCtor)
 {
-    const int width=10, height=10;
     Grid grid(width, height);
     ASSERT_TRUE(true);
 }
 
 TEST(GridTests, testExpandSize)
 {
-    const int width=10, height=10;
     Grid grid(width, height);
     //check dimensions
     //check width
@@ -35,7 +38,6 @@ TEST(GridTests, testExpandSize)
 
 TEST(GridTests, testTouchingEdges)
 {
-    const int width=10, height=10;
     Grid grid(width, height);
     ASSERT_FALSE(grid.touchingEdges());
     
@@ -74,7 +76,6 @@ TEST(GridTests, testTouchingEdges)
 
 TEST(GridTests, testOutOfBounds)
 {
-    const int width=10, height=10;
     Grid grid(width, height);
     ASSERT_FALSE(grid.touchingEdges());
 
@@ -106,17 +107,17 @@ TEST(GridTests, testOutOfBounds)
  */
 TEST(GridTests, testDoubleSetting)
 {
-    const int lower = 10, upper = 1000;
-    const int width = getRandInRangeInclusive(lower, upper),
-              height = getRandInRangeInclusive(lower, upper);
+    const POS_TYPE lower = 10, upper = 1000;
+    const POS_TYPE width = getRandInRangeInclusive<POS_TYPE>(lower, upper),
+              height = getRandInRangeInclusive<POS_TYPE>(lower, upper);
     Grid grid(width, height);
     ASSERT_FALSE(grid.touchingEdges());
 
-   const int doubleSetPos[] = { getRandInRangeInclusive(lower, width),
+   const POS_TYPE doubleSetPos[] = { getRandInRangeInclusive(lower, width),
                                 getRandInRangeInclusive(lower, height) };
-   const int numTimesDoubleSet = getRandInRangeInclusive(lower, upper);
+   const POS_TYPE numTimesDoubleSet = getRandInRangeInclusive(lower, upper);
 
-   for(int i = 0; i < numTimesDoubleSet; i++)
+   for(POS_TYPE i = 0; i < numTimesDoubleSet; i++)
    {
        //randomly decide to set the tile to alive or dead
        const bool tileState = getRandInRangeInclusive(0, 10) % 2 == 0;

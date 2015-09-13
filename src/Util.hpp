@@ -4,7 +4,8 @@
 
 namespace jakway_antf
 {
-int getRandInRangeInclusive(int lower, int upper);
+template<typename T>
+T getRandInRangeInclusive(T lower, T upper);
 }
 
 #endif

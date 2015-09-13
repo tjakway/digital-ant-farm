@@ -7,10 +7,8 @@
 
 #include <deque>
 
-/**
- * it's more correct to think of coordinates as their own type than as a particular kind of integer
- */
-typedef unsigned int POS_TYPE;
+#include "Types.hpp"
+
 
 namespace jakway_antf
 {
