@@ -21,9 +21,9 @@ TEST(GridIteratorTests, testIteratorSyntax)
    //give the grid a predictable pattern: every other tile is alive
    //the first tile will be alive
    bool alive = true;
-   for(int y = 0; y < grid.getWidth(); y++)
+   for(POS_TYPE y = 0; y < grid.getWidth(); y++)
    {
-       for(int x = 0; x < grid.getHeight(); x++)
+       for(POS_TYPE x = 0; x < grid.getHeight(); x++)
        {
             grid.setTile(x, y, alive);
             alive = !alive;
@@ -56,7 +56,7 @@ TEST(GridIteratorTests, testIteratorCount)
     Grid grid(width, height);
     
     //loop through the grid and make sure we iterate the correct number of times
-    int i = 0;
+    POS_TYPE i = 0;
     for(bool tile : grid)
     {
         i++;
@@ -88,11 +88,11 @@ TEST(GridIteratorTests, testOutOfBounds)
  */
 TEST(GridIteratorTests, testHugeGrid)
 {
-    const int hugeWidth = 1000, hugeHeight = 1000;
+    const POS_TYPE hugeWidth = 1000, hugeHeight = 1000;
     Grid hugeGrid(hugeWidth, hugeHeight);
 
     ASSERT_TRUE(hugeGrid.getSize() == (hugeWidth * hugeHeight));
-    int i = 0;
+    POS_TYPE i = 0;
     for(auto n : hugeGrid)
     {
         i++;
@@ -116,10 +116,10 @@ TEST(GridIteratorTests, testTallGrid)
 }
 TEST(GridIteratorTests, testWideGrid)
 {
-    const int wideWidth = 873, wideHeight = 111;
+    const POS_TYPE wideWidth = 873, wideHeight = 111;
     Grid grid(wideWidth, wideHeight);
 
-    int i = 0;
+    POS_TYPE i = 0;
     for(auto n : grid)
     {
         i++;
