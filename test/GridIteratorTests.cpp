@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "Grid.hpp"
+#include "Types.hpp"
 
 namespace {
     const int width=10, height=10;
