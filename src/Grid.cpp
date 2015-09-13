@@ -3,7 +3,6 @@
 #include <cassert>
 #include <stdexcept>
 
-#include "Tile.hpp"
 #include "Util.hpp"
 
 #ifdef DEBUG

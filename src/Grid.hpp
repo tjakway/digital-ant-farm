@@ -9,6 +9,9 @@
 
 #include "Types.hpp"
 
+#define TILE_ALIVE 1
+#define TILE_DEAD 0
+
 
 namespace jakway_antf
 {
