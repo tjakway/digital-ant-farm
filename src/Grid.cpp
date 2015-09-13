@@ -153,7 +153,7 @@ void Grid::runGeneration()
  * return the selected row (corresponding to x) that contains the passed y value
  * will throw if out of bounds
  */
-std::deque<bool>* Grid::getRow(POS_TYPE x, POS_TYPE y, std::deque<std::deque<bool>*> paramTiles)
+std::deque<bool>* Grid::getRow(POS_TYPE x, POS_TYPE y)
 {
     //subtract 1 because y is zero-indexed
     if(tiles.size()-1 < y)
@@ -161,7 +161,7 @@ std::deque<bool>* Grid::getRow(POS_TYPE x, POS_TYPE y, std::deque<std::deque<boo
        throw std::out_of_range("y is greater than the number of rows!");
     }
 
-    std::deque<bool>* selectedRow = paramTiles.at(y);
+    std::deque<bool>* selectedRow = tiles.at(y);
     //subtract 1 because x is zero-indexed
     if(selectedRow->size()-1 < x)
     {
@@ -172,7 +172,7 @@ std::deque<bool>* Grid::getRow(POS_TYPE x, POS_TYPE y, std::deque<std::deque<boo
 
 void Grid::setTile(POS_TYPE x, POS_TYPE y, bool alive)
 {
-    std::deque<bool>* selectedRow = getRow(x, y, tiles);
+    std::deque<bool>* selectedRow = getRow(x, y);
 
     //we've found the tile, modify it
     (*selectedRow)[x] = alive;
@@ -180,7 +180,7 @@ void Grid::setTile(POS_TYPE x, POS_TYPE y, bool alive)
 
 bool Grid::getTile(POS_TYPE x, POS_TYPE y)
 {
-    std::deque<bool>* selectedRow = getRow(x, y, tiles);
+    std::deque<bool>* selectedRow = getRow(x, y);
     return (*selectedRow)[x];
 }
 
@@ -221,37 +221,19 @@ int Grid::GridIterator::getMaxPos(Grid* grid)
  */
 bool* Grid::GridIterator::getTile()
 {
-    if(pos < 0 || pos > getMaxPos(grid))
+    if(xpos > grid->getWidth())
     {
-        throw std::out_of_range("Exception in GridIterator: out of range in getTile()!");
+        throw std::out_of_range("Exception in GridIterator: x out of range in getTile()!");
     }
-    
-    //pos is 0-indexed, we really want the item at pos + 1
-    const int nthItem = pos + 1,
-          //find which row
-          //NOT zero-indexed
-          numRows = grid->getHeight();
-    int whichRow;
-          whichRow = (nthItem / numRows) + 1;
+    if(ypos > grid->getHeight())
+    {
+        throw std::out_of_range("Exception in GridIterator: y out of range in getTile()!");
+    }
 
-    int tilesInPrecedingRows;
-    if(whichRow <= 1)
-    {
-        tilesInPrecedingRows = 0;
-    }
-    else
-    {
-        tilesInPrecedingRows =  nthItem - ((whichRow) * grid->getWidth());
-    }
-          //find which column
-//    const int whichColumn = nthItem - ((whichRow - 1) * grid->getWidth()),
-    const int whichColumn = nthItem - tilesInPrecedingRows;
-
-          //calculate (zero-based) indices
-   int       rowIndex = whichRow,
-          columnIndex = whichColumn - 1;
-    std::deque<bool>* rowDeque = grid->tiles.at(rowIndex);
-    return &rowDeque->at(columnIndex);
+    //use grid->getRow instead of getRow because we need a pointer to the actual bool in the grid so we can modify it if necessary
+    //grid->getTile returns the bool value, which can't be modified
+    std::deque<bool>* row = grid->getRow(xpos, ypos);
+    return &row->at(ypos);
 }
 
 /**
@@ -275,10 +257,11 @@ Grid::GridIterator Grid::GridIterator::operator++(int)
 
 /**
  * only true if both iterators point to the same Grid and are at the same position
+ * this intentionally is NOT a deep equality test because we want to make sure that if 2 iterators are equal they can modify the same grid
  */
 bool Grid::GridIterator::operator==(const GridIterator& other)
 {
-    return other.grid == grid && other.pos == pos;
+    return other.grid == grid && other.xpos == xpos && other.ypos == ypos;
 }
 
 bool Grid::GridIterator::operator!=(const GridIterator& other)
