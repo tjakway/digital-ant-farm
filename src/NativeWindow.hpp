@@ -6,7 +6,7 @@
 #endif
 
 #include <FL/Fl.H>
-#include <FL/Fl_Window.H>
+#include <FL/Fl_Double_Window.H>
 
 #include "DisplayBackend.hpp"
 
@@ -17,13 +17,22 @@ class NativeWindow : public DisplayBackend
 private:
    static const int DEFAULT_WIDTH, DEFAULT_HEIGHT; 
 
-   Fl_Window *window;
+   Fl_Double_Window *window;
+
+protected:
+   
+   /**
+    * pure virtual function to draw to one of the buffers
+    */
+   virtual void updateWindow(Fl_Double_Window* win) = 0;
 
 public:
    NativeWindow();
-   NativeWindow(int width, int height);
+   NativeWindow(int width, int height, const char* label);
 
    virtual ~NativeWindow();
+
+   virtual int beginEventLoop(int argc, char** argv);
 };
 
 }
