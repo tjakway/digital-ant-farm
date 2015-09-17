@@ -290,3 +290,4 @@ Grid::iterator Grid::end()
     //because xpos and ypos are 0-indexed, the ypos just after the last valid iterator is getHeight()
     return Grid::GridIterator(this, 0, getHeight());
 }
+

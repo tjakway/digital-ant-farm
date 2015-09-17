@@ -6,6 +6,7 @@
 #endif
 
 #include <deque>
+#include <memory>
 
 #include "Types.hpp"
 
@@ -99,6 +100,8 @@ public:
     /**iterator methods*/
     iterator begin();
     iterator end();
+
+    static std::shared_ptr<Grid> readGridFromCVS(std::string& filename);
 };
 
 }
