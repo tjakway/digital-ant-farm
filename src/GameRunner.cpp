@@ -16,6 +16,7 @@ GameRunner::~GameRunner()
 {
     delete displayBackend;
     delete imageBackend;
+    delete currentGen;
 }
 
 void GameRunner::runGeneration()
