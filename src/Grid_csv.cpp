@@ -12,12 +12,13 @@
 
 using namespace jakway_antf;
 
-/**
- *
- */
-
 namespace
 {
+    /**
+     * SEE http://stackoverflow.com/questions/1120140/how-can-i-read-and-parse-csv-files-in-c
+     * CREDIT TO LOKI ASTARI (CODE POSTED AS AN ANSWER) -- http://stackoverflow.com/users/14065/loki-astari
+     * see http://meta.stackexchange.com/questions/25956/what-is-up-with-the-source-code-license-on-stack-overflow regarding reuse of code on stackoverflow.com
+     */
     class CSVRow
     {
         public:
@@ -78,6 +79,11 @@ namespace
             CSVRow              m_row;
     };
 }
+/**
+ * END OF REUSED CODE
+ */
+
+
 namespace
 {
     /**
@@ -104,9 +110,6 @@ std::shared_ptr<Grid> Grid::readGridFromCSV(const std::string& filename)
 {
     //XXX: IMPLEMENT
     return nullptr;
-
-
-
 }
 
 #endif
