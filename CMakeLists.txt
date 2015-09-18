@@ -142,3 +142,7 @@ target_link_libraries(${TEST_TARGET} gtest gtest_main)
 target_link_libraries(${TEST_TARGET} ant_farm_lib)
 
 target_link_libraries(${TEST_TARGET} ${FLTK_LIBRARIES})
+
+
+#copy the test resources directory into the bin directory so the tests executable can find it
+file(COPY "res/test/" DESTINATION ${CMAKE_BINARY_DIR})
