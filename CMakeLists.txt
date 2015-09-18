@@ -13,13 +13,11 @@ set(FLTK_SKIP_FLUID 1)
 find_package(FLTK REQUIRED)
 include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
 
-include_directories("${CMAKE_SOURCE_DIR}/include")
-
 set(MAIN_TARGET "ant_farm_lib")
 set(TEST_TARGET "tests")
 
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
-FILE(GLOB SRC src/*.cpp src/*.h)
+FILE(GLOB SRC src/*.cpp)
 
 #see http://stackoverflow.com/questions/10851247/how-to-activate-c-11-in-cmake for proper ways to enable C++11
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -95,15 +93,14 @@ set(ANTFLIB_GTEST_OPTIONS -Wp,-w -w)
 target_compile_options(gtest PRIVATE ${ANTFLIB_GTEST_OPTIONS})
 target_compile_options(gtest_main PRIVATE ${ANTFLIB_GTEST_OPTIONS})
 
-#find test sources
-#WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
-FILE(GLOB TESTS_SRC test/*.cpp test/*.h)
-
-
-
 include_directories(SYSTEM ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/test)
+
+#find test sources
+#WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
+FILE(GLOB TESTS_SRC test/*.cpp )
 
 add_executable(${TEST_TARGET} ${TESTS_SRC})
 
