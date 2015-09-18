@@ -100,8 +100,10 @@ namespace
 /**
  * static method
  */
-std::shared_ptr<Grid> Grid::readGridFromCSV(std::string& filename)
+std::shared_ptr<Grid> Grid::readGridFromCSV(const std::string& filename)
 {
+    //XXX: IMPLEMENT
+    return nullptr;
 
 
 

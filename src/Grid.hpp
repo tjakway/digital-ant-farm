@@ -101,7 +101,7 @@ public:
     iterator begin();
     iterator end();
 
-    static std::shared_ptr<Grid> readGridFromCSV(std::string& filename);
+    static std::shared_ptr<Grid> readGridFromCSV(const std::string& filename);
 };
 
 }
