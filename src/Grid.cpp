@@ -185,22 +185,22 @@ bool Grid::getTile(POS_TYPE x, POS_TYPE y)
 }
 
 /**
- * static method to set every tile in the grid to TILE_DEAD
+ * set every tile in the grid to TILE_DEAD
  */
-void Grid::clearGrid(Grid* grid)
+void Grid::clearGrid()
 {
     /**
      * could make this easier by writing a custom iterator for Grid
      */
-    for(POS_TYPE x = 0; x < grid->getWidth(); x++)
+    for(POS_TYPE x = 0; x < getWidth(); x++)
     {
-        for(POS_TYPE y = 0; y < grid->getHeight(); y++)
+        for(POS_TYPE y = 0; y < getHeight(); y++)
         {
-            grid->setTile(x, y, TILE_DEAD);
+            setTile(x, y, TILE_DEAD);
         }
     }   
     
-    assert(!grid->touchingEdges());
+    assert(!touchingEdges());
 }
 
 //********************************

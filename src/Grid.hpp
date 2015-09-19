@@ -71,7 +71,7 @@ public:
      * sets the passed Grid to all TILE_DEAD
      * can also just reconstruct the grid object, but this saves a memory allocation
      */
-    static void clearGrid(Grid*);
+    void clearGrid();
 
     /** custom iterator*/
     class GridIterator : std::iterator<std::input_iterator_tag, Grid>

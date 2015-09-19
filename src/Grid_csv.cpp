@@ -131,8 +131,49 @@ std::shared_ptr<Grid> Grid::readGridFromCSV(const std::string& filename)
 {
     auto matrixPtr = readCSVToMatrix(filename);
 
+    //convert the matrix representing the CSV spreadsheet into a Grid
+    //height = size of the top level vector
+    //width is trickier since the matrix can be jagged, have to loop through
+    //every row and find the largest one
+    //make the width of the grid the size of the largest row (so it's large enough to fit the entire matrix)
+    std::size_t largestSize = 0;
+    for(auto thisRow : (*matrixPtr))
+    {
+        if(thisRow.size() > largestSize)
+            largestSize = thisRow.size();
+    }
 
-    return nullptr;
+    std::shared_ptr<Grid> grid(new Grid(largestSize, matrixPtr->size()));
+
+    //all tiles are dead by default, loop through the matrix and change the corresponding live tiles in Grid
+    grid->clearGrid();
+
+    //iterator throw each row, where
+    //(*rowIt) is the vector of tiles
+    for(auto rowIt = matrixPtr->begin(); rowIt != matrixPtr->end(); rowIt++)
+    {
+        //get the index of the iterator (i.e. what row are we on?)
+        //see http://stackoverflow.com/questions/2152986/best-way-to-get-the-index-of-an-iterator
+        const unsigned int y = rowIt - matrixPtr->begin();
+        //loop through each tile in the current row
+        for(auto tileIt = (*rowIt).begin(); tileIt != (*rowIt).end(); tileIt++)
+        {
+            //if this tile is alive, get its position and change the corresponding tile in Grid
+            if((*tileIt) == TILE_ALIVE)
+            {
+                //get the index of the current tile
+                const unsigned int x = tileIt - (*rowIt).begin();
+
+                grid->setTile(x, y, TILE_ALIVE);
+
+            }
+
+        }
+    }
+
+    matrixPtr.reset();
+
+    return grid;
 }
 
 #endif

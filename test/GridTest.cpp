@@ -51,25 +51,25 @@ TEST(GridTests, testTouchingEdges)
     grid.setTile(0, 0, TILE_ALIVE);
     //this 3-line chunk of code could be refactored into a static function but I think it's clearer to read it inline here
     ASSERT_TRUE(grid.touchingEdges());
-    Grid::clearGrid(&grid);
+    grid.clearGrid();
     ASSERT_FALSE(grid.touchingEdges());
 
     //check bottom right corner
     grid.setTile(width-1, height-1, TILE_ALIVE);
     ASSERT_TRUE(grid.touchingEdges());
-    Grid::clearGrid(&grid);
+    grid.clearGrid();
     ASSERT_FALSE(grid.touchingEdges());
 
     //check top right corner
     grid.setTile(width-1, 0, TILE_ALIVE);
     ASSERT_TRUE(grid.touchingEdges());
-    Grid::clearGrid(&grid);
+    grid.clearGrid();
     ASSERT_FALSE(grid.touchingEdges());
 
     //check bottom left corner
     grid.setTile(0, height-1, TILE_ALIVE);
     ASSERT_TRUE(grid.touchingEdges());
-    Grid::clearGrid(&grid);
+    grid.clearGrid();
     ASSERT_FALSE(grid.touchingEdges());
 }
 
