@@ -165,9 +165,7 @@ std::shared_ptr<Grid> Grid::readGridFromCSV(const std::string& filename)
                 const unsigned int x = tileIt - (*rowIt).begin();
 
                 grid->setTile(x, y, TILE_ALIVE);
-
             }
-
         }
     }
 
