@@ -5,6 +5,35 @@
 #include "Grid.hpp"
 #include "TestConstants.hpp"
 
+namespace
+{
+    /**
+     * checks that the grid has live cells in a diagonal pattern from the top left to the bottom right
+     */
+    void checkDiag(std::shared_ptr<jakway_antf::Grid> grid)
+    {
+        int x = 0, y = 0;
+
+
+        //the spreadsheet has 1's diagonally, like this:
+        //1 0 0 0
+        //0 1 0 0
+        //0 0 1 0
+        //0 0 0 1
+        //except that instead of 0's it has blank cells
+        for(bool tile : *grid)
+        {
+            if(x == y)
+                ASSERT_TRUE(tile == TILE_ALIVE);
+            else
+                ASSERT_TRUE(tile == TILE_DEAD);
+
+            x++;
+            y++;
+        }
+    }
+}
+
 namespace jakway_antf
 {
 
@@ -14,25 +43,7 @@ namespace jakway_antf
 TEST(GridCSVImportTests, testOneEmptyCSV)
 {
     std::shared_ptr<Grid> grid = Grid::readGridFromCSV(TestConstants::ONE_4X4_CSV);
-    int x = 0, y = 0;
-
-
-    //the spreadsheet has 1's diagonally, like this:
-    //1 0 0 0
-    //0 1 0 0
-    //0 0 1 0
-    //0 0 0 1
-    //except that instead of 0's it has blank cells
-    for(bool tile : *grid)
-    {
-        if(x == y)
-            ASSERT_TRUE(tile == TILE_ALIVE);
-        else
-            ASSERT_TRUE(tile == TILE_DEAD);
-
-        x++;
-        y++;
-    }
+    checkDiag(grid);
 }
 
 /**
@@ -47,6 +58,26 @@ TEST(GridCSVImportTests, testNoBlankCells)
     }
 }
 
+/**
+ * test reading a CSV containing only strings (no blank cells)
+ */
+TEST(GridCSVImportTests, testOnlyStrings)
+{
+    std::shared_ptr<Grid> grid = Grid::readGridFromCSV(TestConstants::ONLY_STRINGS);
+    for(bool tile : *grid)
+    {
+        ASSERT_TRUE(tile == TILE_ALIVE);
+    }
 }
 
+/**
+ * 4x4 spreadsheet with diagonal strings of mixed numbers and characters
+ */
+TEST(GridCSVImportTests, testDiagStrings)
+{
+    std::shared_ptr<Grid> grid = Grid::readGridFromCSV(TestConstants::DIAG_STRINGS);
+    checkDiag(grid);
+}
+
+}
 #endif

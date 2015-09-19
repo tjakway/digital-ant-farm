@@ -14,7 +14,9 @@ private:
     static const std::string RES_DIR;
 public:
     static const std::string ONE_4X4_CSV,
-                             NO_BLANKS;
+                             NO_BLANKS,
+                             ONLY_STRINGS,
+                             DIAG_STRINGS;
 };
 
 }
