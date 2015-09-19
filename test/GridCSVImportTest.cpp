@@ -8,9 +8,9 @@
 namespace jakway_antf
 {
 
-    /**
-     * Test creating the grid from a CSV spreadsheet containing 1's to mark live cells
-     */
+/**
+* Test creating the grid from a CSV spreadsheet containing 1's to mark live cells
+*/
 TEST(GridCSVImportTests, testOneEmptyCSV)
 {
     std::shared_ptr<Grid> grid = Grid::readGridFromCSV(TestConstants::ONE_4X4_CSV);
@@ -32,6 +32,18 @@ TEST(GridCSVImportTests, testOneEmptyCSV)
 
         x++;
         y++;
+    }
+}
+
+/**
+ * test reading a CSV containing all 1's
+ */
+TEST(GridCSVImportTests, testNoBlankCells)
+{
+    std::shared_ptr<Grid> grid = Grid::readGridFromCSV(TestConstants::NO_BLANKS);
+    for(bool tile : *grid)
+    {
+        ASSERT_TRUE(tile == TILE_ALIVE);
     }
 }
 
