@@ -142,4 +142,4 @@ target_link_libraries(${TEST_TARGET} ${FLTK_LIBRARIES})
 
 
 #copy the test resources directory into the bin directory so the tests executable can find it
-file(COPY "res/test/" DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY "res/test/" DESTINATION ${CMAKE_BINARY_DIR}/res/test)
