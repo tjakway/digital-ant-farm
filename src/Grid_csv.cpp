@@ -88,17 +88,38 @@ namespace
 {
     /**
      * read a CSV file into a jagged 2D array where each bool represents whether that tile is alive
+     * returns a shared_ptr to a 2D vector of bools representing tiles
      */
-    std::shared_ptr< std::vector<std::vector<bool>>>  readCSVToMatrix(std::string& filename)
+    std::shared_ptr< std::vector<std::vector<bool>>>  readCSVToMatrix(const std::string& filename)
     {
+        std::shared_ptr< std::vector<std::vector<bool>>> matrix (new std::vector<std::vector<bool>>);
         
-        std::ifstream       file("plop.csv");
+        std::ifstream file(filename);
+        //enable exceptions in case of error
+        file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
-        for(CSVIterator loop(file);loop != CSVIterator();++loop)
+        //loop through each row
+        for(CSVIterator it(file); it != CSVIterator(); ++it)
         {
-            std::cout << "4th Element(" << (*loop)[3] << ")\n";
+            //add a vector to hold the values for this row
+            //since it'll be on the end, it can be accessed with back()
+            matrix->emplace_back(std::vector<bool>());
+
+            //loop through each tile in the matrix
+            for(std::size_t i = 0; i < (*it).size(); i++)
+            {
+                //if the CSV cell is empty, the tile is considered dead
+                //if it contains anything (even random strings/digits), it's considered alive
+                bool cellIsEmpty = ((*it)[i].empty());
+
+                if(cellIsEmpty)
+                    matrix->back().push_back(TILE_DEAD);
+                else
+                    matrix->back().push_back(TILE_ALIVE);
+            }
         }
 
+        return matrix;
     }
 }
 
@@ -108,7 +129,9 @@ namespace
  */
 std::shared_ptr<Grid> Grid::readGridFromCSV(const std::string& filename)
 {
-    //XXX: IMPLEMENT
+    auto matrixPtr = readCSVToMatrix(filename);
+
+
     return nullptr;
 }
 
