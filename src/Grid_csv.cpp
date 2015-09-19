@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <ios>
 
 #include "Grid.hpp"
 
@@ -96,7 +97,8 @@ namespace
         
         std::ifstream file(filename);
         //enable exceptions in case of error
-        file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        if(file.bad())
+            throw std::ios_base::failure("Could not open file " + filename);
 
         //loop through each row
         for(CSVIterator it(file); it != CSVIterator(); ++it)
