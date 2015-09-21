@@ -6,4 +6,7 @@
  */
 typedef unsigned long POS_TYPE;
 
+#define TILE_ALIVE 1
+#define TILE_DEAD 0
+
 #endif
