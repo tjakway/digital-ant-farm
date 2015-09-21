@@ -149,8 +149,8 @@ std::shared_ptr<Grid> Grid::readGridFromCSV(const std::string& filename)
 
     std::shared_ptr<Grid> grid(new Grid(largestSize, matrixPtr->size()));
 
-    //all tiles are dead by default, loop through the matrix and change the corresponding live tiles in Grid
-    grid->clearGrid();
+    //all tiles are dead by default so we don't need to explicitly clear the grid
+    //grid->clearGrid();
 
     //iterator throw each row, where
     //(*rowIt) is the vector of tiles
