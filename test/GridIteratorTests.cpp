@@ -128,4 +128,54 @@ TEST(GridIteratorTests, testWideGrid)
     ASSERT_TRUE(i == grid.getSize());
 }
 
+/**
+ * test that we can use reference types when iterating to modify the grid
+ */
+TEST(GridIteratorTests, testModifyIterator)
+{
+    Grid grid(width, height);
+
+    //all tiles should be dead initially
+    for(auto tile : grid)
+    {
+        ASSERT_TRUE(tile == TILE_DEAD);
+    }
+
+    //modify the grid using a reference type
+    for(auto& mutableTile : grid)
+    {
+        mutableTile = TILE_ALIVE;
+    }
+
+    for(auto tile : grid)
+    {
+        ASSERT_TRUE(tile == TILE_ALIVE);
+    }
+
+    //using a non-reference type won't work!
+    for(auto immutableTile : grid)
+    {
+        immutableTile = TILE_DEAD; 
+    }
+    for(auto immutableTile : grid)
+    {
+        ASSERT_TRUE(immutableTile == TILE_ALIVE);
+    }
+}
+
+/**
+ * make sure we iterate the right number of times when using a reference type
+ */
+TEST(GridIteratorTests, testReferenceIt)
+{
+    Grid grid(width, height);
+    POS_TYPE i = 0;
+
+    for(auto& n : grid)
+    {
+        i++;
+    }
+    ASSERT_TRUE(i == grid.getSize());
+}
+
 }
