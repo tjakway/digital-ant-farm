@@ -42,7 +42,7 @@ namespace jakway_antf
 */
 TEST(GridCSVImportTests, testOneEmptyCSV)
 {
-    std::shared_ptr<Grid> grid = Grid::readGridFromCSV(TestConstants::ONE_4X4_CSV);
+    std::shared_ptr<Grid> grid = Grid::readGridFromCSV(TestConstants::ONES_4X4_CSV);
     checkDiag(grid);
 }
 

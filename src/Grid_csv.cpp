@@ -97,8 +97,10 @@ namespace
         
         std::ifstream file(filename);
         //enable exceptions in case of error
-        if(file.bad())
+        if(file.bad() || !file.is_open())
+        {
             throw std::ios_base::failure("Could not open file " + filename);
+        }
 
         //loop through each row
         for(CSVIterator it(file); it != CSVIterator(); ++it)
