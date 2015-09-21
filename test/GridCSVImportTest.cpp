@@ -29,7 +29,11 @@ namespace
                 ASSERT_TRUE(tile == TILE_DEAD);
 
             x++;
-            y++;
+            if(x >= grid->getWidth())
+            {
+                y++;
+                x = 0;
+            }
         }
     }
 }
