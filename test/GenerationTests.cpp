@@ -2,8 +2,7 @@
 #include "Grid.hpp"
 #include <algorithm>
 
-namespace jakway_antf
-{
+using namespace jakway_antf;
 
 /**
  * the square is a stable shape in the game of life
@@ -61,6 +60,4 @@ TEST(GenerationTests, testSquare)
         checkGrid();
         ASSERT_TRUE(grid.getSize() == ((width+2) * (height+2)));
     }
-}
-
 }
