@@ -22,6 +22,7 @@ GameRunner::~GameRunner()
 void GameRunner::runGeneration()
 {
     //copy the current gen, mutate it, add the
+    //XXX: IMPLEMENT
 
 }
 
