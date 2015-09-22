@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "Types.hpp"
+
 namespace jakway_antf
 {
 
@@ -15,7 +17,15 @@ class TileLogic
 {
 public:
     /** returns whether this tile will be alive in the next generation */
-    static bool WillBeAlive(const bool alive, const unsigned int numLiveNeighbors);
+    static bool WillBeAlive(const bool alive, const POS_TYPE numLiveNeighbors);
+
+    /**
+     * returns an array of coordinates (pairs of x and y, stored in an std::array of size 2) corresponding to the 8 neighbors of the passed tile
+     * NOTE: DOES NOT DO ANY LOGIC OR BOUNDS CHECKING OF THESE COORDINATES--THIS METHOD DOES NOT INTERACT WITH A GRID AT ALL
+     * returns numeric_limits<POS_TYPE>::max() for coordinates against the lower edge of the graph (i.e. for a coordinate (0,0) its neighbors would be numeric_limits<POS_TYPE>::max() instead of -1
+     * throws std::overflow_error if x or y == numeric_limits<POS_TYPE>::max()
+     */
+    static std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS> GetNeighbors(const POS_TYPE x, const POS_TYPE y);
 
     /**
     * see http://stackoverflow.com/questions/4747706/standard-or-custom-exception-in-c

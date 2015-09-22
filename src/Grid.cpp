@@ -2,12 +2,13 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <algorithm>
+#include <array>
 
 #include "Util.hpp"
+#include "TileLogic.hpp"
+#include "Types.hpp"
 
-#ifdef DEBUG
-#include <iostream>
-#endif
 
 using namespace jakway_antf;
 
@@ -146,7 +147,12 @@ void Grid::runGeneration()
 
     assert(!touchingEdges());
 
-    //XXX
+    for(auto gridIt = begin(); gridIt != end(); gridIt++)
+    {
+        
+        
+
+    }
 }
 
 /**
@@ -182,6 +188,29 @@ bool Grid::getTile(POS_TYPE x, POS_TYPE y)
 {
     std::deque<bool>* selectedRow = getRow(x, y);
     return (*selectedRow)[x];
+}
+
+/**
+ * returns true if the tile is alive
+ * returns false if the tile is dead or if the tile is outside the grid
+ */
+bool Grid::getTileIfValid(const POS_TYPE x, const POS_TYPE y)
+{
+    //POS_TYPE is unsigned, can never be less than 0
+    if(x >= getWidth())
+        return TILE_DEAD;
+    if(y >= getHeight())
+        return TILE_DEAD;
+
+    try
+    {
+        return getTile(x, y);
+    }
+    //don't catch other exceptions--might be completely unrelated and make debugging very painful
+    catch(std::out_of_range& e)
+    {
+        return false;
+    }
 }
 
 /**
@@ -275,6 +304,47 @@ bool& Grid::GridIterator::operator*()
     return *getTile();
 }
 
+unsigned int Grid::GridIterator::getNumLiveNeighbors()
+{
+    //every tile has 8 neighbors
+    std::array<bool, NUM_NEIGHBORS> neighbors;
+    neighbors.fill(false);
+
+    //get a list of this tile's neighbors
+    auto neighborPosArray = TileLogic::GetNeighbors(getX(), getY());
+    assert(neighbors.size() == neighborPosArray.size());
+
+    //check which neighbors are alive
+    auto aliveIt = neighbors.begin();
+    std::for_each(neighborPosArray.begin(), neighborPosArray.end(), [&aliveIt, this](std::array<POS_TYPE, 2> pos)
+        {
+            *aliveIt = this->grid->getTileIfValid(pos.front(), pos.back());
+        });
+
+
+    //count them
+    unsigned int numLiveNeighbors = 0;
+    std::for_each(neighbors.begin(), neighbors.end(), [&numLiveNeighbors](bool alive)
+        {
+            if(alive)
+            {
+                numLiveNeighbors++;
+            }
+        });
+
+    return numLiveNeighbors;
+}
+
+POS_TYPE Grid::GridIterator::getX()
+{
+    return xpos;
+}
+
+POS_TYPE Grid::GridIterator::getY()
+{
+    return ypos;
+}
+
 Grid::iterator Grid::begin()
 {
     return Grid::GridIterator(this, 0, 0);
@@ -290,4 +360,3 @@ Grid::iterator Grid::end()
     //because xpos and ypos are 0-indexed, the ypos just after the last valid iterator is getHeight()
     return Grid::GridIterator(this, 0, getHeight());
 }
-

@@ -45,6 +45,11 @@ private:
 
     std::deque<bool>* getRow(POS_TYPE x, POS_TYPE y);
 
+    /**
+     * returns true if the passed tile is alive or false if the tile is dead or outside the grid
+     * never throws an out of bounds exception
+     */
+    bool getTileIfValid(const POS_TYPE x, const POS_TYPE y);
 
 public:
     /** copy constructor */
@@ -90,6 +95,11 @@ public:
         bool operator==(const GridIterator& other);
         bool operator!=(const GridIterator& other);
         bool& operator*();        
+
+        unsigned int getNumLiveNeighbors();
+
+        POS_TYPE getX();
+        POS_TYPE getY();
     };
     /** allows for more uniform and predictable syntax
      * access as Grid::iterator */
