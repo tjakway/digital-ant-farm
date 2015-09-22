@@ -147,10 +147,19 @@ void Grid::runGeneration()
 
     assert(!touchingEdges());
 
+
+    //XXX -- TODO: implement runGeneration
+    //XXX -- TODO: instead of making changes in-place, change the method signature to return a unique_ptr<Grid> -- a new pointer to a grid
+    //make all changes to the new grid so that the generation only calculates which tiles live based on ALREADY ALIVE tiles, otherwise you're modifying a tiles' neighbor right before you check if it will live.  THIS IS A BUG!
+    assert(false); //XXX
     for(auto gridIt = begin(); gridIt != end(); gridIt++)
     {
-        
-        
+        const bool isAlive = *gridIt;
+        unsigned int numLiveNeighbors = gridIt.getNumLiveNeighbors();
+
+        //change the tile based on if it will live
+        *gridIt = TileLogic::WillBeAlive(isAlive, numLiveNeighbors);
+
 
     }
 }
