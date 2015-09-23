@@ -174,9 +174,7 @@ void Grid::runGeneration()
 
     std::vector<Tile> differenceList;
 
-    //XXX -- TODO: implement runGeneration
-    //XXX -- TODO: instead of making changes in-place, change the method signature to return a unique_ptr<Grid> -- a new pointer to a grid
-    //make all changes to the new grid so that the generation only calculates which tiles live based on ALREADY ALIVE tiles, otherwise you're modifying a tiles' neighbor right before you check if it will live.  THIS IS A BUG!
+    //add all changes to a difference list so that the generation only calculates which tiles live based on ALREADY ALIVE tiles, otherwise you're modifying a tiles' neighbor right before you check if it will live.  THIS IS A BUG!
     for(auto gridIt = begin(); gridIt != end(); gridIt++)
     {
         const bool isAlive = *gridIt;
