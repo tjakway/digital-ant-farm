@@ -140,13 +140,36 @@ Grid::~Grid()
     }
 }
 
+namespace
+{
+    /**
+     * a barebones immutable Tile class
+     */
+    class Tile
+    {
+    private:
+        const POS_TYPE x, y;
+        const bool alive;
+    public:
+        Tile(const POS_TYPE pX, const POS_TYPE pY, const bool pAlive)
+            : x(pX), y(pY), alive(pAlive) {}
+
+        POS_TYPE getX()
+        { return x; }
+        POS_TYPE getY()
+        { return y; }
+        bool isAlive()
+        { return alive; }
+    };
+}
+
+
 void Grid::runGeneration()
 {
     if(touchingEdges())
         expandGrid();
 
     assert(!touchingEdges());
-
 
     //XXX -- TODO: implement runGeneration
     //XXX -- TODO: instead of making changes in-place, change the method signature to return a unique_ptr<Grid> -- a new pointer to a grid
