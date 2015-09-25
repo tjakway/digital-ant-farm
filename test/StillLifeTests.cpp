@@ -8,7 +8,7 @@ using namespace jakway_antf;
  * the square is a stable shape in the game of life
  * it should never change regardless of how many generations we run
  */
-TEST(GenerationTests, testSquare)
+TEST(StillLifeTests, testBlock)
 {
     const POS_TYPE width=4, height=4;
     Grid grid(width, height);
