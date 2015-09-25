@@ -16,10 +16,8 @@ TEST(GenerationTests, testSquare)
     ASSERT_TRUE(grid.getSize() == (width * height));
 
     /**
-     * XXX--TODO:
      * check that the grid has 4 live tiles with a 1-cell dead tile buffer around them
      * grid.runGeneration will expand the grid since touchingEdges() is true
-     * also change the name of GameRunner.runGeneration because 2 classes with different methods with the same name is confusing
      */
     auto checkGrid = [&grid]() {
         //check the top and bottom edges are dead--we expanded the graph
