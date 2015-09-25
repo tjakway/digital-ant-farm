@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include "Grid.hpp"
+#include "TestUtils.hpp"
 #include <algorithm>
+#include <array>
 
 using namespace jakway_antf;
 
@@ -20,25 +22,13 @@ TEST(StillLifeTests, testBlock)
      * grid.runGeneration will expand the grid since touchingEdges() is true
      */
     auto checkGrid = [&grid]() {
-        //check the top and bottom edges are dead--we expanded the graph
-        for(POS_TYPE x = 0; x < width + 1; x++)
-        {
-            ASSERT_TRUE(grid.getTile(x, 0) == TILE_DEAD);
-            ASSERT_TRUE(grid.getTile(x, height + 1) == TILE_DEAD);
-        }
+        std::vector<std::array<POS_TYPE, 2>> liveTiles ={
+            {{1, 2}},
+            {{2, 1}},
+            {{1, 2}},
+            {{2, 2}} };
 
-        //check the left and right edges are dead
-        for(POS_TYPE y = 0; y < height + 1; y++)
-        {
-            ASSERT_TRUE(grid.getTile(y, 0) == TILE_DEAD);
-            ASSERT_TRUE(grid.getTile(y, width + 1) == TILE_DEAD);
-        }
-
-        //the middle of the graph is the square--it should be alive
-        ASSERT_TRUE(grid.getTile(1, 1) == TILE_ALIVE);
-        ASSERT_TRUE(grid.getTile(2, 1) == TILE_ALIVE);
-        ASSERT_TRUE(grid.getTile(1, 2) == TILE_ALIVE);
-        ASSERT_TRUE(grid.getTile(2, 2) == TILE_ALIVE);
+        assertDeadExcept(&grid, liveTiles);
         };
 
     //set all tiles to alive
