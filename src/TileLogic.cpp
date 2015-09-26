@@ -23,7 +23,7 @@ bool TileLogic::WillBeAlive(const bool alive, const POS_TYPE numLiveNeighbors)
         return true;
 
     /** 3. Any live cell with more than three live neighbours dies, as if by overcrowding. */
-    if(numLiveNeighbors > 3)
+    if(alive && (numLiveNeighbors > 3))
         return false;
 
     /** 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction. */
