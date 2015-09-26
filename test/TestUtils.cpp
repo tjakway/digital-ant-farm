@@ -1,6 +1,9 @@
 #include "TestUtils.hpp"
 
+#include "Grid.hpp"
+
 #include "gtest/gtest.h"
+#include <iostream>
 #include <algorithm>
 
 namespace jakway_antf
@@ -26,6 +29,15 @@ void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> points)
            ASSERT_TRUE(thisIsAlive == TILE_DEAD);
        }
    }
+}
+
+void printGrid(Grid* grid)
+{
+    std::cerr << "Grid width: " << grid->getWidth() << ", height: " << grid->getHeight() << std::endl;
+    for(auto it = grid->begin(); it != grid->end(); it++)
+    {
+        std::cerr << "(" << it.getX() << ", " << it.getY() << "): " << *it;
+    }
 }
 
 }

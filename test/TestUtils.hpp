@@ -13,5 +13,7 @@ namespace jakway_antf
  */
 void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> points);
 
+void printGrid(Grid* grid);
+
 }
 #endif
