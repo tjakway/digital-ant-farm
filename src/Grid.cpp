@@ -57,6 +57,10 @@ void Grid::expandGrid()
 #ifdef DEBUG
     assertGridIsRectangular(tiles);
 #endif
+#ifdef DEBUG
+    const POS_TYPE oldWidth = getWidth(),
+                   oldHeight = getHeight();
+#endif
     const POS_TYPE newWidth = getWidth() + 2;
 
     //add 1 tile to the beginning of each sublist (prepending a column)
@@ -65,6 +69,8 @@ void Grid::expandGrid()
     {
         thisSubList->push_front(TILE_DEAD);
         thisSubList->push_back(TILE_DEAD);
+
+        assert(thisSubList->size() == newWidth);
     }
 
     //add 1 row to the beginning of the tiles list (prepending a row)
@@ -73,7 +79,11 @@ void Grid::expandGrid()
         *lastList = new std::deque<bool>(newWidth, TILE_DEAD);
     tiles.push_front(firstList);
     tiles.push_back(lastList);
-    
+
+#ifdef DEBUG
+    assert(tiles.size() == oldHeight + 2);
+    assert(getHeight() == oldHeight + 2);
+#endif
     
 #ifdef DEBUG
     //check the size is correct
