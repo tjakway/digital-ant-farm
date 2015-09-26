@@ -197,6 +197,9 @@ void Grid::runGeneration()
         //if so, add it to the difference list
         if(willBeAlive != isAlive)
         {
+            //make sure this tile really will change by checking against the original grid
+            assert(getTile(gridIt.getX(), gridIt.getY()) != willBeAlive);
+
             differenceList.emplace_back(gridIt.getX(), gridIt.getY(), willBeAlive);
         }
     }

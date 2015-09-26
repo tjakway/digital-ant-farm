@@ -5,6 +5,7 @@
 #include "gtest/gtest.h"
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 namespace jakway_antf
 {
@@ -20,6 +21,8 @@ void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> points)
        if(std::find(points.begin(), points.end(), thisGridPoint) != points.end())
        {
            //points contains this coordinate
+           if(thisIsAlive != TILE_ALIVE)
+               printGrid(grid);
            ASSERT_TRUE(thisIsAlive == TILE_ALIVE);
        }
        else
@@ -36,7 +39,12 @@ void printGrid(Grid* grid)
     std::cerr << "Grid width: " << grid->getWidth() << ", height: " << grid->getHeight() << std::endl;
     for(auto it = grid->begin(); it != grid->end(); it++)
     {
-        std::cerr << "(" << it.getX() << ", " << it.getY() << "): " << *it;
+        std::string itStr;
+        if(*it == TILE_ALIVE)
+            itStr = "true";
+        else
+            itStr = "false";
+        std::cerr << "(" << it.getX() << ", " << it.getY() << "): " << itStr << std::endl;
     }
 }
 

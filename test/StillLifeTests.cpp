@@ -12,7 +12,7 @@ using namespace jakway_antf;
  */
 TEST(StillLifeTests, testBlock)
 {
-    const POS_TYPE width=4, height=4;
+    const POS_TYPE width=2, height=2;
     Grid grid(width, height);
 
     ASSERT_TRUE(grid.getSize() == (width * height));
@@ -23,9 +23,9 @@ TEST(StillLifeTests, testBlock)
      */
     auto checkGrid = [&grid]() {
         std::vector<std::array<POS_TYPE, 2>> liveTiles ={
+            {{1, 1}},
             {{1, 2}},
             {{2, 1}},
-            {{1, 2}},
             {{2, 2}} };
 
         assertDeadExcept(&grid, liveTiles);
