@@ -108,7 +108,7 @@ TEST(GridIteratorTests, testTallGrid)
     const int tallWidth = 488, tallHeight = 923;
     Grid grid(tallWidth, tallHeight);
 
-    int i = 0;
+    POS_TYPE i = 0;
     for(auto n : grid)
     {
         i++;
