@@ -367,7 +367,7 @@ unsigned int Grid::GridIterator::getNumLiveNeighbors()
     neighbors.fill(false);
 
     //get a list of this tile's neighbors
-    auto neighborPosArray = TileLogic::GetNeighbors(getX(), getY());
+    std::unique_ptr<std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS>> neighborPosArray= TileLogic::GetNeighbors(getX(), getY());
     assert(neighbors.size() == neighborPosArray->size());
 
     //check which neighbors are alive
