@@ -3,6 +3,7 @@
 #include <limits>
 #include <string>
 #include <array>
+#include <memory>
 
 using namespace jakway_antf;
 
@@ -33,7 +34,7 @@ bool TileLogic::WillBeAlive(const bool alive, const POS_TYPE numLiveNeighbors)
     throw TileException("Invalid game board state -- should never reach here.");
 }
 
-std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS> TileLogic::GetNeighbors(const POS_TYPE x, const POS_TYPE y)
+std::unique_ptr<std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS>> TileLogic::GetNeighbors(const POS_TYPE x, const POS_TYPE y)
 {
     //check for overflow errors and construct the appropriate error message
     bool overflowX = false, overflowY = false;
@@ -58,8 +59,8 @@ std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS> TileLogic::GetNeighbors(const 
         throw std::overflow_error(exceptionStr);
 
     //return neighbor positions
-    std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS> neighbors
-    { //need an extra set of braces for each std::array, see http://stackoverflow.com/questions/12844475/why-cant-simple-initialize-with-braces-2d-stdarray
+    std::unique_ptr<std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS>> neighbors
+    { new std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS> { //need an extra set of braces for each std::array, see http://stackoverflow.com/questions/12844475/why-cant-simple-initialize-with-braces-2d-stdarray
         { {{x - 1, y - 1}},
           {{x - 1, y}},
           {{x - 1, y + 1}},
@@ -69,6 +70,6 @@ std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS> TileLogic::GetNeighbors(const 
           {{x + 1, y - 1}},
           {{x + 1, y}},
           {{x + 1, y + 1}} }
-    };
+    } }; //need an extra brace for the enclosing unique_ptr
     return neighbors;
 }

@@ -98,8 +98,8 @@ public:
 
         unsigned int getNumLiveNeighbors();
 
-        POS_TYPE getX();
-        POS_TYPE getY();
+        POS_TYPE getX() const;
+        POS_TYPE getY() const;
     };
     /** allows for more uniform and predictable syntax
      * access as Grid::iterator */

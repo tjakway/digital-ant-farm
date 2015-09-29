@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <vector>
+#include <limits>
 
 #include "Util.hpp"
 #include "TileLogic.hpp"
@@ -253,9 +254,8 @@ bool Grid::getTile(POS_TYPE x, POS_TYPE y)
 bool Grid::getTileIfValid(const POS_TYPE x, const POS_TYPE y)
 {
     //POS_TYPE is unsigned, can never be less than 0
-    if(x >= getWidth())
-        return TILE_DEAD;
-    if(y >= getHeight())
+    //however it can overflow to its max value
+    if(x >= getWidth() || y >= getHeight() || x == std::numeric_limits<POS_TYPE>::max() || y == std::numeric_limits<POS_TYPE>::max())
         return TILE_DEAD;
 
     try
@@ -368,11 +368,12 @@ unsigned int Grid::GridIterator::getNumLiveNeighbors()
 
     //get a list of this tile's neighbors
     auto neighborPosArray = TileLogic::GetNeighbors(getX(), getY());
-    assert(neighbors.size() == neighborPosArray.size());
+    assert(neighbors.size() == neighborPosArray->size());
 
     //check which neighbors are alive
+    //std::array iterators are never invalidated because its size is a compile-time constant
     auto aliveIt = neighbors.begin();
-    std::for_each(neighborPosArray.begin(), neighborPosArray.end(), [&aliveIt, this](std::array<POS_TYPE, 2> pos)
+    std::for_each(neighborPosArray->begin(), neighborPosArray->end(), [&aliveIt, this](std::array<POS_TYPE, 2> pos)
         {
             *aliveIt = this->grid->getTileIfValid(pos.front(), pos.back());
         });
@@ -391,12 +392,12 @@ unsigned int Grid::GridIterator::getNumLiveNeighbors()
     return numLiveNeighbors;
 }
 
-POS_TYPE Grid::GridIterator::getX()
+POS_TYPE Grid::GridIterator::getX() const
 {
     return xpos;
 }
 
-POS_TYPE Grid::GridIterator::getY()
+POS_TYPE Grid::GridIterator::getY() const
 {
     return ypos;
 }

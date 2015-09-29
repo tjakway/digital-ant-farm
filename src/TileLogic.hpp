@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <array>
+#include <memory>
 
 #include "Types.hpp"
 
@@ -26,7 +27,7 @@ public:
      * returns numeric_limits<POS_TYPE>::max() for coordinates against the lower edge of the graph (i.e. for a coordinate (0,0) its neighbors would be numeric_limits<POS_TYPE>::max() instead of -1
      * throws std::overflow_error if x or y == numeric_limits<POS_TYPE>::max()
      */
-    static std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS> GetNeighbors(const POS_TYPE x, const POS_TYPE y);
+    static std::unique_ptr<std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS>> GetNeighbors(const POS_TYPE x, const POS_TYPE y);
 
     /**
     * see http://stackoverflow.com/questions/4747706/standard-or-custom-exception-in-c
