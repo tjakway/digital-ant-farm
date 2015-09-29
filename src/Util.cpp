@@ -3,6 +3,7 @@
 #include "Types.hpp"
 
 #include <random>
+#include <utility>
 
 namespace jakway_antf
 {
@@ -21,7 +22,16 @@ T getRandInRangeInclusive(T lower, T upper)
     return distribution(mersenne_rng);
 }
 
+//need type specializations because this is compiled into a library and linked
+//with the test code (to avoid compiling the main project code twice)
+//only template specializations can be included in library object code, not the templates themselves
 template POS_TYPE getRandInRangeInclusive<POS_TYPE>(POS_TYPE, POS_TYPE);
 template int getRandInRangeInclusive<int>(int, int);
+
+template<typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args&&... args)
+{
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
 
 }
