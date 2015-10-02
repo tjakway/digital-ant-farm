@@ -375,7 +375,17 @@ unsigned int Grid::GridIterator::getNumLiveNeighbors()
     auto aliveIt = neighbors.begin();
     std::for_each(neighborPosArray->begin(), neighborPosArray->end(), [&aliveIt, this](std::array<POS_TYPE, 2> pos)
         {
-            *aliveIt = this->grid->getTileIfValid(pos.front(), pos.back());
+            const POS_TYPE &x = pos.front(), &y = pos.back();
+            //explicitly handle POS_TYPE's max value--it's a special case
+            //this is also faster than just use getTileIfValid because it prevents an out_of_bounds exception from being thrown
+            if(x == std::numeric_limits<POS_TYPE>::max() || y == std::numeric_limits<POS_TYPE>::max())
+            {
+                *aliveIt = false;
+            }
+            else
+            {
+                *aliveIt = this->grid->getTileIfValid(x, y);
+            }
         });
 
 
