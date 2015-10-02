@@ -363,31 +363,30 @@ bool& Grid::GridIterator::operator*()
 unsigned int Grid::GridIterator::getNumLiveNeighbors()
 {
     //every tile has 8 neighbors
-    std::array<bool, NUM_NEIGHBORS> neighbors;
-    neighbors.fill(false);
+    std::vector<bool> neighbors;
 
     //get a list of this tile's neighbors
     std::unique_ptr<std::array<std::array<POS_TYPE,2>, NUM_NEIGHBORS>> neighborPosArray= TileLogic::GetNeighbors(getX(), getY());
-    assert(neighbors.size() == neighborPosArray->size());
 
     //check which neighbors are alive
     //std::array iterators are never invalidated because its size is a compile-time constant
-    auto aliveIt = neighbors.begin();
-    std::for_each(neighborPosArray->begin(), neighborPosArray->end(), [&aliveIt, this](std::array<POS_TYPE, 2> pos)
+    std::for_each(neighborPosArray->begin(), neighborPosArray->end(), [&neighbors, this](std::array<POS_TYPE, 2> pos)
         {
             const POS_TYPE &x = pos.front(), &y = pos.back();
             //explicitly handle POS_TYPE's max value--it's a special case
             //this is also faster than just use getTileIfValid because it prevents an out_of_bounds exception from being thrown
             if(x == std::numeric_limits<POS_TYPE>::max() || y == std::numeric_limits<POS_TYPE>::max())
             {
-                *aliveIt = false;
+                neighbors.push_back(false);
             }
             else
             {
-                *aliveIt = this->grid->getTileIfValid(x, y);
+                neighbors.push_back(this->grid->getTileIfValid(x, y));
             }
         });
 
+
+    assert(neighbors.size() == neighborPosArray->size());
 
     //count them
     unsigned int numLiveNeighbors = 0;

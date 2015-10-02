@@ -16,11 +16,11 @@ using namespace jakway_antf;
 bool TileLogic::WillBeAlive(const bool alive, const POS_TYPE numLiveNeighbors)
 {
     /** 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population. */
-    if(numLiveNeighbors < 2) 
+    if(alive && numLiveNeighbors < 2) 
         return false;
 
     /** 2. Any live cell with two or three live neighbours lives on to the next generation. */
-    if((alive && numLiveNeighbors == 2) || (alive && numLiveNeighbors == 3))
+    if(alive && (numLiveNeighbors == 2 || numLiveNeighbors == 2))
         return true;
 
     /** 3. Any live cell with more than three live neighbours dies, as if by overcrowding. */
@@ -31,7 +31,8 @@ bool TileLogic::WillBeAlive(const bool alive, const POS_TYPE numLiveNeighbors)
     if(!alive && numLiveNeighbors == 3)
         return true;
 
-    throw TileException("Invalid game board state -- should never reach here.");
+    //otherwise no change
+    return alive;
 }
 
 
