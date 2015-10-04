@@ -144,6 +144,15 @@ Grid::Grid(const POS_TYPE width, const POS_TYPE height)
     }
 }
 
+Grid::Grid(const POS_TYPE width, const POS_TYPE height, std::vector<std::array<POS_TYPE, 2>> liveTiles)
+    : Grid(width, height) //use a delegating constructor to avoid duplication
+{
+    for(const auto& pos : liveTiles)
+    {
+        setTile(pos.front(), pos.back(), TILE_ALIVE);
+    }
+}
+
 Grid::~Grid()
 {
     for(std::deque<bool>* thisSubList : tiles)

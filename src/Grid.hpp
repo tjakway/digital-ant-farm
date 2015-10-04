@@ -7,6 +7,8 @@
 
 #include <deque>
 #include <memory>
+#include <vector>
+#include <array>
 
 #include "Types.hpp"
 
@@ -56,6 +58,8 @@ public:
     Grid(const Grid& other);
 
     Grid(const POS_TYPE width, const POS_TYPE height);
+
+    Grid(const POS_TYPE width, const POS_TYPE height, std::vector<std::array<POS_TYPE, 2>> liveTiles);
 
     ~Grid();
 
