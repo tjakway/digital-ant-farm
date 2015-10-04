@@ -420,6 +420,18 @@ POS_TYPE Grid::GridIterator::getY() const
     return ypos;
 }
 
+bool Grid::allDead() 
+{
+    //loop through every tile and return if any are alive
+    for(const auto tile : *this)
+    {
+        if(tile == TILE_ALIVE)
+            return false;
+    }
+    return true;
+}
+
+
 Grid::iterator Grid::begin()
 {
     return Grid::GridIterator(this, 0, 0);

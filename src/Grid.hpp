@@ -113,6 +113,10 @@ public:
     iterator begin();
     iterator end();
 
+    /** returns true if all tiles are dead */
+    bool allDead();
+
+    //implemented in Grid_csv.cpp
     static std::shared_ptr<Grid> readGridFromCSV(const std::string& filename);
 };
 
