@@ -11,7 +11,7 @@ namespace jakway_antf
 /**
  * assert all tiles in the passed Grid are dead except parameter points
  */
-void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> points);
+void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> *points);
 
 void printGrid(Grid* grid);
 

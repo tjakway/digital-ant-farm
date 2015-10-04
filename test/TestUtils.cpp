@@ -6,11 +6,14 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <vector>
+#include <array>
+#include "Types.hpp"
 
 namespace jakway_antf
 {
 
-void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> points)
+void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> *points)
 {
    for(Grid::iterator it = grid->begin(); it != grid->end(); it++)
    {
@@ -18,7 +21,7 @@ void assertDeadExcept(Grid *grid, std::vector<std::array<POS_TYPE, 2>> points)
        std::array<POS_TYPE, 2> thisGridPoint { {it.getX(), it.getY()} };
 
        const bool thisIsAlive = grid->getTile(it.getX(), it.getY());
-       if(std::find(points.begin(), points.end(), thisGridPoint) != points.end())
+       if(std::find(points->begin(), points->end(), thisGridPoint) != points->end())
        {
            //points contains this coordinate
            if(thisIsAlive != TILE_ALIVE)

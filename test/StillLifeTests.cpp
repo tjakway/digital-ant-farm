@@ -3,6 +3,7 @@
 #include "TestUtils.hpp"
 #include <algorithm>
 #include <array>
+#include <vector>
 
 using namespace jakway_antf;
 
@@ -28,7 +29,7 @@ TEST(StillLifeTests, testBlock)
             {{2, 1}},
             {{2, 2}} };
 
-        assertDeadExcept(&grid, liveTiles);
+        assertDeadExcept(&grid, &liveTiles);
         };
 
     //set all tiles to alive
@@ -71,7 +72,7 @@ TEST(StillLifeTests, testBeehive)
 
     auto checkGrid = [&grid, &liveTiles]() {
 
-        assertDeadExcept(&grid, liveTiles);
+        assertDeadExcept(&grid, &liveTiles);
         };
 
     //run generations and assert nothing has changed
