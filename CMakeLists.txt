@@ -13,6 +13,10 @@ set(FLTK_SKIP_FLUID 1)
 find_package(FLTK REQUIRED)
 include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
 
+#need SDL
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIR})
+
 set(MAIN_TARGET "ant_farm_lib")
 set(TEST_TARGET "tests")
 
@@ -77,8 +81,9 @@ else()
 endif()
 #-----------------------------------------------------------------------
 
-#link against FLTK
+#link against FLTK and SDL2
 target_link_libraries(${MAIN_TARGET} ${FLTK_LIBRARIES})
+target_link_libraries(${MAIN_TARGET} ${SDL2_LIBRARY})
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
@@ -134,11 +139,11 @@ else()
     all_targets_compile_definitions("-DNDEBUG")
 endif()
 
+#link libraries to test executable
 target_link_libraries(${TEST_TARGET} gtest gtest_main)
-
 target_link_libraries(${TEST_TARGET} ant_farm_lib)
-
 target_link_libraries(${TEST_TARGET} ${FLTK_LIBRARIES})
+target_link_libraries(${TEST_TARGET} ${SDL2_LIBRARY})
 
 
 #copy the test resources directory into the bin directory so the tests executable can find it
