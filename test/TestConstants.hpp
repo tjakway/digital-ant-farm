@@ -17,6 +17,7 @@ public:
                              NO_BLANKS,
                              ONLY_STRINGS,
                              DIAG_STRINGS;
+    static const std::string DIEHARD_SEED;
 };
 
 }

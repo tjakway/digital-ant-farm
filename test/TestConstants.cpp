@@ -10,3 +10,5 @@ const std::string TestConstants::ONES_4X4_CSV = RES_DIR + "ones_4x4.csv",
                   TestConstants::NO_BLANKS = RES_DIR + "no_blanks.csv",
                   TestConstants::ONLY_STRINGS = RES_DIR + "only_strings.csv",
                   TestConstants::DIAG_STRINGS = RES_DIR + "diag_strings.csv";
+
+const std::string TestConstants::DIEHARD_SEED = RES_DIR + "diehard_seed.csv";
