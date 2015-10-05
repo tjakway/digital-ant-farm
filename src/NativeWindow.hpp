@@ -33,6 +33,10 @@ public:
    virtual ~NativeWindow();
 
    virtual int beginEventLoop(int argc, char** argv);
+
+   int getWidth() const;
+   int getHeight() const;
+   std::string& getLabel() const;
 };
 
 }
