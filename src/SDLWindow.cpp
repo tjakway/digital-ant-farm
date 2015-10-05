@@ -24,17 +24,21 @@ SDLWindow::SDLContext::SDLInitException::SDLInitException(const std::string& wha
 
 SDLWindow::SDLContext::SDLContext()
 {
+    //should never have 2 SDLContext objects!  its CTOR should only be called once!
     if(exists)
     {
         throw SDLContextSingletonException("SDLContext CTOR called but SDLContext already exists!");
     }
     else
     {
+        //initialize SDL, check for errors, and set the flag so we don't initialize twice
         int errorCode = SDL_Init(initFlags);
         if(errorCode != 0)
         {
             throw SDLInitException(SDL_GetError());
         }
+
+        exists = true;
     }
 }
 
