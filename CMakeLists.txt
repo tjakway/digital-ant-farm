@@ -8,6 +8,9 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build: Debug, Release, DebugWithWarnings, or DebugWithWarningsOptimized." FORCE)
 endif()
 
+#tell cmake where to find module scripts
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/sdl2-cmake-scripts")
+
 #need FLTK for GUI
 set(FLTK_SKIP_FLUID 1)
 find_package(FLTK REQUIRED)
