@@ -15,13 +15,22 @@
 namespace jakway_antf
 {
 
+class SDLException : public std::runtime_error
+{
+    SDLException(const std::string&);
+}
+
 class SDLWindow : public NativeWindow
 {
 private:
+    std::unique_ptr<Grid> grid;
+
     /** an offscreen frame used that SDL will render into */
     SDL_Window* hiddenWindow;
     SDL_Renderer* renderer;
     SDL_Texture* texture;
+
+    shared_ptr<SDLContext> context;
 
     class SDLContext
     {
@@ -54,13 +63,15 @@ private:
 
 protected:
     virtual void updateWindow(Fl_Double_Window* win);
-    void draw(Grid *grid);
+    void draw();
 
 public:
-    SDLWindow();
-    SDLWindow(int width, int height, const char* label);
+    SDLWindow(std::unique_ptr<Grid>);
+    SDLWindow(int width, int height, const char* label, std::unique_ptr<Grid> pGrid);
 
     virtual ~SDLWindow();
+
+    void setGrid(Grid *grid);
 };
 
 

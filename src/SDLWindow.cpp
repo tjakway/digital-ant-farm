@@ -12,6 +12,12 @@
 
 using namespace jakway_antf;
 
+//SDLException
+SDLException::SDLException(const std::string& what_arg) : std::runtime_error(what_arg) {}
+
+//SDLContext inner class
+const Uint32 SDLWindow::SDLContext::initFlags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
+
 //used to track if the singleton already exists
 bool SDLWindow::SDLContext::exists = false;
 
@@ -58,25 +64,39 @@ std::shared_ptr<SDLWindow::SDLContext> SDLWindow::SDLContext::GetSDLContext()
     return singletonPtr;
 }
 
+SDLWindow::SDLWindow(std::unique_ptr<Grid> pGrid) : NativeWindow(), grid(pGrid)
+{ 
+    //get the SDL context singleton
+    context = SDLContext::GetSDLContext();
 
-void SDLWindow::updateWindow(Fl_Double_Window* win)
-{
-    
-
-}
-
-SDLWindow::SDLWindow() : NativeWindow()
-{
     //create a hidden SDL window of the same dimensions as the (visible) FLTK window
     hiddenWindow = SDL_CreateWindow(getLabel().c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, getWidth(), getHeight(), SDL_WINDOW_HIDDEN);
 
     //need to be able to render to a texture 
     renderer = SDL_CreateRenderer(hiddenWindow, -1, SDL_RENDERER_TARGETTEXTURE);
+}
+
+void SDLWindow::updateWindow(Fl_Double_Window* win)
+{
+    draw();
+    //get the underlying surface of the hidden window
+    //DO NOT delete this surface--it will be deleted when the window is deleted
+    SDL_Surface* surface = SDL_GetWindowSurface(hiddenWindow);
+    
+    //to make sure we have an RGB8 value, copy the window surface to a new surface with that pixel format
+    //FLTK can draw this directly with fl_draw_image
+    //http://www.fltk.org/doc-1.3/drawing.html#ssect_DirectImageDrawing
+    
+    SDL_Surface* rgbSurface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGB888, 0);
+    if(rgbSurface == nullptr)
+    {
+        throw std::SDLException("error while converting window surface to RGB8 format.  SDL Error information: " + SDL_GetError());
+    }
 
 
 }
 
-void SDLWindow::draw(Grid *grid)
+void SDLWindow::draw()
 {
 
 }
