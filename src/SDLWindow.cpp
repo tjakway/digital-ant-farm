@@ -97,7 +97,28 @@ void SDLWindow::updateWindow(Fl_Double_Window* win)
         throw SDLException(errorStr);
     }
 
+    //may need to lock this surface to directly read pixels
+    if(SDL_MUSTLOCK(rgbSurface))
+    {
+        if(SDL_LockSurface(rgbSurface) != 0)
+        {
+            std::string errorStr("error while locking copied rgb surface"),
+                sdlErrorStr(SDL_GetError());
+            errorStr += sdlErrorStr;
+            throw SDLException(errorStr);
+        }
+    }
+    //can now directly access pixels
 
+
+    //unlock the surface if necessary
+    if(SDL_MUSTLOCK(rgbSurface))
+    {
+        SDL_UnlockSurface(rgbSurface);
+    }
+
+    //clean up the copied surface
+    SDL_DestroySurface(rgbSurface);
 }
 
 void SDLWindow::draw()
