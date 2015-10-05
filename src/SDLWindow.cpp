@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <memory>
+#include <utility>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
@@ -64,7 +65,7 @@ std::shared_ptr<SDLWindow::SDLContext> SDLWindow::SDLContext::GetSDLContext()
     return singletonPtr;
 }
 
-SDLWindow::SDLWindow(std::unique_ptr<Grid> pGrid) : NativeWindow(), grid(pGrid)
+SDLWindow::SDLWindow(std::unique_ptr<Grid> pGrid) : NativeWindow(), grid(std::move(pGrid))
 { 
     //get the SDL context singleton
     context = SDLContext::GetSDLContext();
@@ -90,7 +91,10 @@ void SDLWindow::updateWindow(Fl_Double_Window* win)
     SDL_Surface* rgbSurface = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGB888, 0);
     if(rgbSurface == nullptr)
     {
-        throw std::SDLException("error while converting window surface to RGB8 format.  SDL Error information: " + SDL_GetError());
+        std::string errorStr("error while converting window surface to RGB8 format.  SDL Error information: "),
+            sdlErrorStr(SDL_GetError());
+        errorStr += sdlErrorStr;
+        throw SDLException(errorStr);
     }
 
 
