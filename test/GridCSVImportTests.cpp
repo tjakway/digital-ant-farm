@@ -12,7 +12,7 @@ namespace
      */
     void checkDiag(std::shared_ptr<jakway_antf::Grid> grid)
     {
-        int x = 0, y = 0;
+        POS_TYPE x = 0, y = 0;
 
 
         //the spreadsheet has 1's diagonally, like this:
