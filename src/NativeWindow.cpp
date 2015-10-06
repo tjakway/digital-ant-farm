@@ -53,7 +53,8 @@ ImageViewer::ImageViewer(int width, int height, const char *name) : Fl_Double_Wi
     //initialize to a blank image (all black pixel data buffer)
     //in RGB8 each pixel is 8 bits AKA 1 byte
     //the standard says sizeof(char) will always be 1, see http://stackoverflow.com/questions/9727465/will-a-char-always-always-always-have-8-bits
-    unsigned char* blankBuf = new unsigned char[width * height * DEPTH];
+    //see http://stackoverflow.com/questions/7546620/operator-new-initializes-memory-to-zero for why the () after the array brackets initializes the array to 0
+    unsigned char* blankBuf = new unsigned char[width * height * DEPTH]();
     //need an explicit deletor or shared_ptr won't use the right delete operator
     std::shared_ptr<unsigned char> blankBufPtr(blankBuf, [](unsigned char* buf)
         {
