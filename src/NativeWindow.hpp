@@ -34,6 +34,7 @@ protected:
     * and return a pointer to RGB8 format image data
     */
    virtual std::shared_ptr<unsigned char> drawGrid(const Grid* grid) = 0;
+   virtual void processIO(std::shared_ptr<Grid>) = 0;
 
 public:
    NativeWindow();
