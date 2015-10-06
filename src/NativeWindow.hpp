@@ -8,10 +8,16 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
 
+#include <memory>
+#include <mutex>
+
 #include "DisplayBackend.hpp"
 
 namespace jakway_antf
 {
+
+class ImageViewer;
+
 class NativeWindow : public DisplayBackend
 {
 private:
@@ -40,6 +46,23 @@ public:
    std::string& getLabel() const;
 };
 
-}
 
+/**
+ * a typesafe FLTK widget that draws the passed image data 
+ */
+class ImageViewer : public Fl_Double_Window
+{
+    std::shared_ptr<unsigned char> imageData;
+    std::mutex imageDataMutex;
+
+    // FLTK DRAW METHOD
+    void draw();
+
+public:
+    ImageViewer(int width, int height, const char *name=0); 
+
+    void setImageData(std::shared_ptr<unsigned char>);
+};
+
+}
 #endif
