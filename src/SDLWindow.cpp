@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <memory>
+#include <functional>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
@@ -76,8 +77,11 @@ SDLWindow::SDLWindow() : NativeWindow()
     renderer = SDL_CreateRenderer(hiddenWindow, -1, SDL_RENDERER_TARGETTEXTURE);
 }
 
-void SDLWindow::updateWindow(const Grid* grid)
+/**
+ */
+std::shared_ptr<unsigned char*> SDLWindow::drawGrid(const Grid* grid)
 {
+    //draw the Grid using SDL to the hidden window
     draw();
     //get the underlying surface of the hidden window
     //DO NOT delete this surface--it will be deleted when the window is deleted
@@ -109,15 +113,23 @@ void SDLWindow::updateWindow(const Grid* grid)
     }
     //can now directly access pixels
 
+//    const unsigned char* pixelsPtr = reinterpret_cast<const unsigned char*>(rgbSurface->pixels);
+    unsigned char* pixelsPtr = (unsigned char*)(rgbSurface->pixels);
 
-    //unlock the surface if necessary
-    if(SDL_MUSTLOCK(rgbSurface))
-    {
-        SDL_UnlockSurface(rgbSurface);
-    }
-
-    //clean up the copied surface
-    SDL_FreeSurface(rgbSurface);
+    //need a custom deleter because we created a copy of the SDL_Surface
+    //we cant directly delete the pixel data but need to delete the underlying SDL_Surface instead
+    //see http://stackoverflow.com/questions/10151834/why-cant-i-static-cast-between-char-and-unsigned-char for why this ought to be reinterpret_cast
+    auto surfaceDeleter = [rgbSurface](decltype(pixelsPtr)* ignored) 
+            //don't directly delete the pixel buffer, delete the underlying SDL_Surface instead
+            {
+                //unlock the surface if necessary
+                if(SDL_MUSTLOCK(rgbSurface))
+                {
+                    SDL_UnlockSurface(rgbSurface);
+                }
+                SDL_FreeSurface(rgbSurface);
+            };
+    return std::shared_ptr<unsigned char*>(pixelsPtr, surfaceDeleter);
 }
 
 void SDLWindow::draw()

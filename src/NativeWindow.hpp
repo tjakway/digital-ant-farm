@@ -22,9 +22,10 @@ private:
 protected:
    
    /**
-    * pure virtual function to draw to one of the buffers
+    * pure virtual function to have a rendering-specialized subclass draw the grid
+    * and return a pointer to RGB8 format image data
     */
-   virtual void updateWindow(Fl_Double_Window* win) = 0;
+   virtual std::shared_ptr<unsigned char*> drawGrid(const Grid* grid) = 0;
 
 public:
    NativeWindow();

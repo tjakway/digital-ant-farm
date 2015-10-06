@@ -67,7 +67,7 @@ private:
     };
 
 protected:
-    virtual void updateWindow(const Grid *grid);
+    virtual std::shared_ptr<unsigned char*> drawGrid(const Grid* grid) = 0;
     void draw();
 
 public:
