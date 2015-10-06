@@ -21,12 +21,14 @@ public:
     SDLException(const std::string&);
 };
 
+/**
+ * this class DOES NOT handle the management of whatever grid it might be drawing--that's the responsibility of whichever class is passing Grid to draw()
+ * draw() ought to be this class' ONLY interface to a grid
+ */
 class SDLWindow : public NativeWindow
 {
 private:
     class SDLContext;
-
-    std::unique_ptr<Grid> grid;
 
     /** an offscreen frame used that SDL will render into */
     SDL_Window* hiddenWindow;
@@ -65,16 +67,14 @@ private:
     };
 
 protected:
-    virtual void updateWindow(Fl_Double_Window* win);
+    virtual void updateWindow(const Grid *grid);
     void draw();
 
 public:
-    SDLWindow(std::unique_ptr<Grid>);
-    SDLWindow(int width, int height, const char* label, std::unique_ptr<Grid> pGrid);
+    SDLWindow();
+    SDLWindow(int width, int height, const char* label);
 
     virtual ~SDLWindow();
-
-    void setGrid(Grid *grid);
 };
 
 

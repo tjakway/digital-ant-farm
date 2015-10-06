@@ -4,7 +4,6 @@
 
 #include <stdexcept>
 #include <memory>
-#include <utility>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
@@ -65,7 +64,7 @@ std::shared_ptr<SDLWindow::SDLContext> SDLWindow::SDLContext::GetSDLContext()
     return singletonPtr;
 }
 
-SDLWindow::SDLWindow(std::unique_ptr<Grid> pGrid) : NativeWindow(), grid(std::move(pGrid))
+SDLWindow::SDLWindow() : NativeWindow()
 { 
     //get the SDL context singleton
     context = SDLContext::GetSDLContext();
@@ -77,7 +76,7 @@ SDLWindow::SDLWindow(std::unique_ptr<Grid> pGrid) : NativeWindow(), grid(std::mo
     renderer = SDL_CreateRenderer(hiddenWindow, -1, SDL_RENDERER_TARGETTEXTURE);
 }
 
-void SDLWindow::updateWindow(Fl_Double_Window* win)
+void SDLWindow::updateWindow(const Grid* grid)
 {
     draw();
     //get the underlying surface of the hidden window
@@ -118,7 +117,7 @@ void SDLWindow::updateWindow(Fl_Double_Window* win)
     }
 
     //clean up the copied surface
-    SDL_DestroySurface(rgbSurface);
+    SDL_FreeSurface(rgbSurface);
 }
 
 void SDLWindow::draw()
