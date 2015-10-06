@@ -79,7 +79,7 @@ SDLWindow::SDLWindow() : NativeWindow()
 
 /**
  */
-std::shared_ptr<unsigned char*> SDLWindow::drawGrid(const Grid* grid)
+std::shared_ptr<unsigned char> SDLWindow::drawGrid(const Grid* grid)
 {
     //draw the Grid using SDL to the hidden window
     draw();
@@ -119,7 +119,7 @@ std::shared_ptr<unsigned char*> SDLWindow::drawGrid(const Grid* grid)
     //need a custom deleter because we created a copy of the SDL_Surface
     //we cant directly delete the pixel data but need to delete the underlying SDL_Surface instead
     //see http://stackoverflow.com/questions/10151834/why-cant-i-static-cast-between-char-and-unsigned-char for why this ought to be reinterpret_cast
-    auto surfaceDeleter = [rgbSurface](decltype(pixelsPtr)* ignored) 
+    auto surfaceDeleter = [rgbSurface](decltype(pixelsPtr) ignored) 
             //don't directly delete the pixel buffer, delete the underlying SDL_Surface instead
             {
                 //unlock the surface if necessary
@@ -129,7 +129,7 @@ std::shared_ptr<unsigned char*> SDLWindow::drawGrid(const Grid* grid)
                 }
                 SDL_FreeSurface(rgbSurface);
             };
-    return std::shared_ptr<unsigned char*>(pixelsPtr, surfaceDeleter);
+    return std::shared_ptr<unsigned char>(pixelsPtr, surfaceDeleter);
 }
 
 void SDLWindow::draw()
