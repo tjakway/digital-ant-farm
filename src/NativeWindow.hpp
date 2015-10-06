@@ -6,6 +6,7 @@
 #endif
 
 #include <FL/Fl.H>
+#include <FL/Fl_Window.H>
 #include <FL/Fl_Double_Window.H>
 
 #include <memory>
@@ -23,7 +24,8 @@ class NativeWindow : public DisplayBackend
 private:
    static const int DEFAULT_WIDTH, DEFAULT_HEIGHT; 
 
-   Fl_Double_Window *window;
+   Fl_Window *window;
+   ImageViewer *viewer;
 
 protected:
    
@@ -52,6 +54,8 @@ public:
  */
 class ImageViewer : public Fl_Double_Window
 {
+    static const int DEPTH, BITS;
+
     std::shared_ptr<unsigned char> imageData;
     std::mutex imageDataMutex;
 
