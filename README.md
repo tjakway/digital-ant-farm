@@ -1,6 +1,10 @@
 Get the repository with
 
-git clone --recursive https://github.com/tjakway/digital-ant-farm.gi://github.com/tjakway/digital-ant-farm.git 
+git clone --recursive https://github.com/tjakway/digital-ant-farm.git
+
+or
+git clone https://github.com/tjakway/digital-ant-farm.git
+git submodule update --init --recursive
 
 Build with:
 
