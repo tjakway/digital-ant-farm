@@ -72,6 +72,10 @@ SDLWindow::SDLWindow() : NativeWindow()
 
     //create a hidden SDL window of the same dimensions as the (visible) FLTK window
     hiddenWindow = SDL_CreateWindow(getLabel().c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, getWidth(), getHeight(), SDL_WINDOW_HIDDEN);
+    if(hiddenWindow == nullptr)
+    {
+        throw SDLException("SDL_CreateWindow failed!");
+    }
 
     //need to be able to render to a texture 
     renderer = SDL_CreateRenderer(hiddenWindow, -1, SDL_RENDERER_TARGETTEXTURE);
@@ -134,6 +138,7 @@ std::shared_ptr<unsigned char> SDLWindow::drawGrid(const Grid* grid)
 
 void SDLWindow::draw()
 {
+    
 
 }
 

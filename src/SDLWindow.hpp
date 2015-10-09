@@ -60,7 +60,7 @@ private:
         public:
             SDLContextSingletonException(const std::string&);
         };
-        class SDLInitException : public std::runtime_error
+        class SDLInitException : public SDLException
         {
         public:
             SDLInitException(const std::string&);
