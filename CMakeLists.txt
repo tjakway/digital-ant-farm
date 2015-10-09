@@ -82,9 +82,9 @@ if(NOT WIN32)
         COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/test
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
 
-    add_library(${MAIN_TARGET_LIB} ${SRC} ctags.output)
+    add_library(${MAIN_TARGET_LIB} STATIC ${SRC} ctags.output)
 else()
-    add_library(${MAIN_TARGET_LIB} ${SRC})
+    add_library(${MAIN_TARGET_LIB} STATIC ${SRC})
 endif()
 #-----------------------------------------------------------------------
 
@@ -158,9 +158,18 @@ file(COPY "res/test/" DESTINATION ${CMAKE_BINARY_DIR}/res/test)
 #get the location of the static library so we can link the main target directly against it
 #get_property(MAIN_TARGET_LIB_LOCATION TARGET MAIN_TARGET_LIB PROPERTY LOCATION)
 
+#SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+#SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+#link_directories(${CMAKE_BINARY_DIR})
+
+set(${MAIN_TARGET_LIB_PATH} CACHE STRING "" FORCE ${CMAKE_BINARY_DIR}/${MAIN_TARGET_LIB}.${CMAKE_STATIC_LIBRARY_SUFFIX})
+
+MESSAGE(${MAIN_SRC_FILE} INFO)
+MESSAGE(${MAIN_TARGET_LIB_PATH} INFO)
 
 #the static library doesn't have a main() function
-add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE} ${CMAKE_BINARY_DIR}/${MAIN_TARGET_LIB})
+add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE} ${MAIN_TARGET_LIB_PATH})
 
 #link against FLTK and SDL2
 target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
