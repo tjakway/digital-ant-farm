@@ -20,11 +20,15 @@ include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 
+set(MAIN_TARGET_EXE "game_of_life")
 set(MAIN_TARGET_LIB "ant_farm_lib")
 set(TEST_TARGET "tests")
 
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
 FILE(GLOB SRC src/*.cpp)
+#don't compile the library with main.cpp
+list(REMOVE_ITEM SRC "main.cpp")
+set(MAIN_SRC_FILE ${CMAKE_SOURCE_DIR}/src/main.cpp)
 
 #see http://stackoverflow.com/questions/10851247/how-to-activate-c-11-in-cmake for proper ways to enable C++11
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -84,7 +88,6 @@ else()
 endif()
 #-----------------------------------------------------------------------
 
-#link against FLTK and SDL2
 target_link_libraries(${MAIN_TARGET_LIB} ${FLTK_LIBRARIES})
 target_link_libraries(${MAIN_TARGET_LIB} ${SDL2_LIBRARY})
 
@@ -151,3 +154,18 @@ target_link_libraries(${TEST_TARGET} ${SDL2_LIBRARY})
 
 #copy the test resources directory into the bin directory so the tests executable can find it
 file(COPY "res/test/" DESTINATION ${CMAKE_BINARY_DIR}/res/test)
+
+#get the location of the static library so we can link the main target directly against it
+#get_property(MAIN_TARGET_LIB_LOCATION TARGET MAIN_TARGET_LIB PROPERTY LOCATION)
+
+
+#the static library doesn't have a main() function
+add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE} ${CMAKE_BINARY_DIR}/${MAIN_TARGET_LIB})
+
+#link against FLTK and SDL2
+target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
+target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
+
+#link against the rest of the code
+target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
+
