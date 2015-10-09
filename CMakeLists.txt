@@ -88,8 +88,15 @@ else()
 endif()
 #-----------------------------------------------------------------------
 
-target_link_libraries(${MAIN_TARGET_LIB} ${FLTK_LIBRARIES})
-target_link_libraries(${MAIN_TARGET_LIB} ${SDL2_LIBRARY})
+#the static library doesn't have a main() function
+add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE})
+
+#link against FLTK and SDL2
+target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
+target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
+
+#link against the rest of the code
+target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
@@ -154,27 +161,3 @@ target_link_libraries(${TEST_TARGET} ${SDL2_LIBRARY})
 
 #copy the test resources directory into the bin directory so the tests executable can find it
 file(COPY "res/test/" DESTINATION ${CMAKE_BINARY_DIR}/res/test)
-
-#get the location of the static library so we can link the main target directly against it
-#get_property(MAIN_TARGET_LIB_LOCATION TARGET MAIN_TARGET_LIB PROPERTY LOCATION)
-
-#SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-#SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-#link_directories(${CMAKE_BINARY_DIR})
-
-set(${MAIN_TARGET_LIB_PATH} CACHE STRING "" FORCE ${CMAKE_BINARY_DIR}/${MAIN_TARGET_LIB}.${CMAKE_STATIC_LIBRARY_SUFFIX})
-
-MESSAGE(${MAIN_SRC_FILE} INFO)
-MESSAGE(${MAIN_TARGET_LIB_PATH} INFO)
-
-#the static library doesn't have a main() function
-add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE} ${MAIN_TARGET_LIB_PATH})
-
-#link against FLTK and SDL2
-target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
-target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
-
-#link against the rest of the code
-target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
-
