@@ -44,6 +44,7 @@ private:
         static bool exists; //statically initialized to false
                             //used to check if the singleton object already exists
         static std::shared_ptr<SDLContext> singletonPtr;
+        //can only be obtained from factory method
         SDLContext();
     public:
         //not copyable
