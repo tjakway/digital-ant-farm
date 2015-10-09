@@ -19,7 +19,7 @@ const int NativeWindow::DEFAULT_WIDTH = 640,
 void NativeWindow::processIO(std::shared_ptr<Grid> grid)
 {
     std::shared_ptr<unsigned char> imageData = drawGrid(grid.get());
-    //XXX: IMPLEMENT
+    viewer->setImageData(imageData);
 }
 
 NativeWindow::NativeWindow() : NativeWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, nullptr)
