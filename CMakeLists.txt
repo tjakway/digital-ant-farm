@@ -20,7 +20,7 @@ include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 
-set(MAIN_TARGET "ant_farm_lib")
+set(MAIN_TARGET_LIB "ant_farm_lib")
 set(TEST_TARGET "tests")
 
 #WARNING: CMAKE WON'T BE ABLE TO DETECT WHEN NEW SOURCE FILES ARE ADDED!
@@ -32,12 +32,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 #add a property to both the main library and the test target
 function(all_targets_compile_property)
     #see http://stackoverflow.com/questions/5096881/does-set-target-properties-in-cmake-override-cmake-cxx-flags 
-    target_compile_options(${MAIN_TARGET} PRIVATE ${ARGN})
+    target_compile_options(${MAIN_TARGET_LIB} PRIVATE ${ARGN})
     target_compile_options(${TEST_TARGET} PRIVATE ${ARGN})
 endfunction()
 
 function(all_targets_compile_definitions def)
-    target_compile_definitions(${MAIN_TARGET} PRIVATE ${def})
+    target_compile_definitions(${MAIN_TARGET_LIB} PRIVATE ${def})
     target_compile_definitions(${TEST_TARGET} PRIVATE ${def})
 endfunction()
 
@@ -78,15 +78,15 @@ if(NOT WIN32)
         COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/test
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
 
-    add_library(${MAIN_TARGET} ${SRC} ctags.output)
+    add_library(${MAIN_TARGET_LIB} ${SRC} ctags.output)
 else()
-    add_library(${MAIN_TARGET} ${SRC})
+    add_library(${MAIN_TARGET_LIB} ${SRC})
 endif()
 #-----------------------------------------------------------------------
 
 #link against FLTK and SDL2
-target_link_libraries(${MAIN_TARGET} ${FLTK_LIBRARIES})
-target_link_libraries(${MAIN_TARGET} ${SDL2_LIBRARY})
+target_link_libraries(${MAIN_TARGET_LIB} ${FLTK_LIBRARIES})
+target_link_libraries(${MAIN_TARGET_LIB} ${SDL2_LIBRARY})
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
