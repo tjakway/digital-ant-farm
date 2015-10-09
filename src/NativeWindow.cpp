@@ -48,6 +48,21 @@ int NativeWindow::beginEventLoop(int argc, char** argv)
     return Fl::run();
 }
 
+int NativeWindow::getWidth()
+{
+    return window->w();
+}
+
+int NativeWindow::getHeight()
+{
+    return window->h();
+}
+
+const char* NativeWindow::getLabel()
+{
+    return window->label();
+}
+
 /*************************************************
  *************ImageViewer*************************
  *************************************************/

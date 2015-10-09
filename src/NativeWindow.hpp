@@ -44,9 +44,9 @@ public:
 
    virtual int beginEventLoop(int argc, char** argv);
 
-   int getWidth() const;
-   int getHeight() const;
-   std::string& getLabel() const;
+   int getWidth();
+   int getHeight();
+   const char* getLabel();
 };
 
 

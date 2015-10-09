@@ -19,6 +19,8 @@ const Uint32 SDLWindow::SDLContext::initFlags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
 //used to track if the singleton already exists
 bool SDLWindow::SDLContext::exists = false;
 
+std::shared_ptr<SDLWindow::SDLContext> SDLWindow::SDLContext::singletonPtr;
+
 //only used in the SDLContext CTOR--thrown if for some reason more than 1 SDLContext object exists
 SDLWindow::SDLContext::SDLContextSingletonException::SDLContextSingletonException(const std::string& what_arg)
     : std::logic_error(what_arg) {}
@@ -72,7 +74,7 @@ SDLWindow::SDLWindow() : NativeWindow()
     context = SDLContext::GetSDLContext();
 
     //create a hidden SDL window of the same dimensions as the (visible) FLTK window
-    hiddenWindow = SDL_CreateWindow(getLabel().c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, getWidth(), getHeight(), SDL_WINDOW_HIDDEN);
+    hiddenWindow = SDL_CreateWindow(getLabel(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, getWidth(), getHeight(), SDL_WINDOW_HIDDEN);
     if(hiddenWindow == nullptr)
     {
         throw SDLException("SDL_CreateWindow failed!", SDL_GetError());
