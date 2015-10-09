@@ -1,15 +1,26 @@
 #include "NativeWindow.hpp"
 
+#include "Grid.hpp"
+
 #include <FL/Fl.H>
+#include <FL/Fl_Window.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/fl_draw.H>
+
+#include <memory>
 
 using namespace jakway_antf;
 
 //define static constants
 const int NativeWindow::DEFAULT_WIDTH = 640,
              NativeWindow::DEFAULT_HEIGHT = 480;
+
+void NativeWindow::processIO(std::shared_ptr<Grid> grid)
+{
+    std::shared_ptr<unsigned char> imageData = drawGrid(grid.get());
+    //XXX: IMPLEMENT
+}
 
 NativeWindow::NativeWindow() : NativeWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, nullptr)
 { }
