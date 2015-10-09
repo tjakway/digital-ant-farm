@@ -148,6 +148,14 @@ void SDLWindow::draw()
         throw SDLException("Hidden window's SDL_Surface is null!", SDL_GetError());
     }
 
+    //clear the renderer to a white background
+    SDL_SetRenderDrawColor(renderer, RenderClearColor[0], RenderClearColor[1], RenderClearColor[2], RenderClearColor[3]);
+
+    SDL_RenderClear(renderer);
+
+    //draw a red rectangle
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
     SDL_FillRect(hiddenSurface, nullptr, SDL_MapRGB(hiddenSurface->format, 255, 0, 0));
 }
 
