@@ -7,12 +7,13 @@
 #include <mutex>
 #include <condition_variable>
 
+#include "Backend.hpp"
 #include "Grid.hpp"
 
 namespace jakway_antf
 {
 
-class AsyncBackendQueue
+class AsyncBackendQueue : Backend
 {
     //don't implement processIO--leave pure virtual
     
