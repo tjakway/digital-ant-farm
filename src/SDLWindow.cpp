@@ -16,6 +16,8 @@ using namespace jakway_antf;
 //SDLException
 SDLException::SDLException(const std::string& what_arg) : std::runtime_error(what_arg) {}
 
+SDLException::SDLException(const std::string& what_arg, const char* sdlGetError) : std::runtime_error(what_arg + "  SDL_GetError: " + std::string(sdlGetError)) {}
+
 //SDLContext inner class
 const Uint32 SDLWindow::SDLContext::initFlags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
 
@@ -27,7 +29,7 @@ SDLWindow::SDLContext::SDLContextSingletonException::SDLContextSingletonExceptio
     : std::logic_error(what_arg) {}
 
 SDLWindow::SDLContext::SDLInitException::SDLInitException(const std::string& what_arg)
-    : std::runtime_error("SDL Initialization Error: " + what_arg) {}
+    : SDLException("SDL Initialization Error: " + what_arg) {}
 
 SDLWindow::SDLContext::SDLContext()
 {
@@ -74,11 +76,15 @@ SDLWindow::SDLWindow() : NativeWindow()
     hiddenWindow = SDL_CreateWindow(getLabel().c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, getWidth(), getHeight(), SDL_WINDOW_HIDDEN);
     if(hiddenWindow == nullptr)
     {
-        throw SDLException("SDL_CreateWindow failed!");
+        throw SDLException("SDL_CreateWindow failed!", SDL_GetError());
     }
 
     //need to be able to render to a texture 
     renderer = SDL_CreateRenderer(hiddenWindow, -1, SDL_RENDERER_TARGETTEXTURE);
+    if(renderer == nullptr)
+    {
+        throw SDLException("SDL_CreateRenderer failed!", SDL_GetError());
+    }
 }
 
 /**

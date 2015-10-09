@@ -19,6 +19,7 @@ class SDLException : public std::runtime_error
 {
 public:
     SDLException(const std::string&);
+    SDLException(const std::string&, const char*);
 };
 
 /**
