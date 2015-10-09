@@ -26,6 +26,10 @@ SDLWindow::SDLContext::SDLContextSingletonException::SDLContextSingletonExceptio
 SDLWindow::SDLContext::SDLInitException::SDLInitException(const std::string& what_arg)
     : SDLException("SDL Initialization Error: " + what_arg) {}
 
+///clear to a white background
+///see https://wiki.libsdl.org/SDL_SetRenderDrawColor
+const std::array<const Uint8, 4> SDLWindow::RenderClearColor = {{255, 255, 255, SDL_ALPHA_OPAQUE}};
+
 SDLWindow::SDLContext::SDLContext()
 {
     //should never have 2 SDLContext objects!  its CTOR should only be called once!
@@ -82,8 +86,6 @@ SDLWindow::SDLWindow() : NativeWindow()
     }
 }
 
-/**
- */
 std::shared_ptr<unsigned char> SDLWindow::drawGrid(const Grid* grid)
 {
     //draw the Grid using SDL to the hidden window
@@ -139,7 +141,6 @@ std::shared_ptr<unsigned char> SDLWindow::drawGrid(const Grid* grid)
 
 void SDLWindow::draw()
 {
-<<<<<<< HEAD
     //render to the hidden window
     SDL_Surface* hiddenSurface = SDL_GetWindowSurface(hiddenWindow);
     if(hiddenSurface == nullptr)
@@ -148,10 +149,6 @@ void SDLWindow::draw()
     }
 
     SDL_FillRect(hiddenSurface, nullptr, SDL_MapRGB(hiddenSurface->format, 255, 0, 0));
-=======
-    
->>>>>>> 8cf8dab39f2affdc7d9b084709a5fe1fe0ca76db
-
 }
 
 SDLWindow::~SDLWindow()

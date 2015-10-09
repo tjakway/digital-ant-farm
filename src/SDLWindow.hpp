@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <memory>
+#include <array>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
@@ -25,6 +26,7 @@ class SDLWindow : public NativeWindow
 private:
     class SDLContext;
 
+    /** what color to clear the screen to */
     static const std::array<const Uint8, 4> RenderClearColor;
 
     /** an offscreen frame used that SDL will render into */
