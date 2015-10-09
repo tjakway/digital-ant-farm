@@ -2,6 +2,7 @@
 #define ANTF_SDL_WINDOW_H
 
 #include "NativeWindow.hpp"
+#include "SDLException.hpp"
 
 #include <stdexcept>
 #include <string>
@@ -15,13 +16,6 @@
 namespace jakway_antf
 {
 
-class SDLException : public std::runtime_error
-{
-public:
-    SDLException(const std::string&);
-    SDLException(const std::string&, const char*);
-};
-
 /**
  * this class DOES NOT handle the management of whatever grid it might be drawing--that's the responsibility of whichever class is passing Grid to draw()
  * draw() ought to be this class' ONLY interface to a grid
@@ -30,6 +24,8 @@ class SDLWindow : public NativeWindow
 {
 private:
     class SDLContext;
+
+    static const std::array<const Uint8, 4> RenderClearColor;
 
     /** an offscreen frame used that SDL will render into */
     SDL_Window* hiddenWindow;

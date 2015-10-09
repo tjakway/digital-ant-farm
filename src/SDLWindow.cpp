@@ -13,11 +13,6 @@
 
 using namespace jakway_antf;
 
-//SDLException
-SDLException::SDLException(const std::string& what_arg) : std::runtime_error(what_arg) {}
-
-SDLException::SDLException(const std::string& what_arg, const char* sdlGetError) : std::runtime_error(what_arg + "  SDL_GetError: " + std::string(sdlGetError)) {}
-
 //SDLContext inner class
 const Uint32 SDLWindow::SDLContext::initFlags = SDL_INIT_TIMER | SDL_INIT_VIDEO;
 
@@ -144,7 +139,14 @@ std::shared_ptr<unsigned char> SDLWindow::drawGrid(const Grid* grid)
 
 void SDLWindow::draw()
 {
-    
+    //render to the hidden window
+    SDL_Surface* hiddenSurface = SDL_GetWindowSurface(hiddenWindow);
+    if(hiddenSurface == nullptr)
+    {
+        throw SDLException("Hidden window's SDL_Surface is null!", SDL_GetError());
+    }
+
+    SDL_FillRect(hiddenSurface, nullptr, SDL_MapRGB(hiddenSurface->format, 255, 0, 0));
 
 }
 
