@@ -20,6 +20,7 @@ void NativeWindow::processIO(std::shared_ptr<Grid> grid)
 {
     std::shared_ptr<unsigned char> imageData = drawGrid(grid.get());
     viewer->setImageData(imageData);
+    viewer->redraw();
 }
 
 NativeWindow::NativeWindow() : NativeWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, nullptr)
