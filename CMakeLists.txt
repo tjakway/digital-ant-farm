@@ -9,12 +9,26 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 #tell cmake where to find module scripts
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/sdl2-cmake-scripts")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/sdl2-cmake-scripts)
 
+set(LOCAL_FLTK_DIR "${CMAKE_SOURCE_DIR}/lib/fltk-1.3.3")
+
+#FLTK
+set(OPTION_BUILD_EXAMPLES OFF CACHE BOOL "Don't build FLTK examples")
+#use FLTK jpeg, zlib and png libraries instead of system built ins
+#cmake has problems finding these libraries on Mac OS X
+set(OPTION_USE_SYSTEM_LIBJPEG OFF CACHE BOOL "Use FLTK built ins")
+set(OPTION_USE_SYSTEM_ZLIB OFF CACHE BOOL "Use FLTK built ins")
+set(OPTION_USE_SYSTEM_LIBPNG OFF CACHE BOOL "Use FLTK built ins")
 #need FLTK for GUI
-set(FLTK_SKIP_FLUID 1)
-find_package(FLTK REQUIRED)
-include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
+#set(FLTK_SKIP_FLUID 1)
+#find_package(FLTK REQUIRED NO_MODULE)
+#include(${FLTK_USE_FILE})
+#find_package(FLTK REQUIRED)
+#include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
+add_subdirectory(${LOCAL_FLTK_DIR} "${CMAKE_BINARY_DIR}/fltk-1.3.3")
+include_directories(SYSTEM ${LOCAL_FLTK_DIR})
+
 
 #need SDL
 find_package(SDL2 REQUIRED)
@@ -88,15 +102,17 @@ else()
 endif()
 #-----------------------------------------------------------------------
 
+target_link_libraries(${MAIN_TARGET_LIB} ${FLTK_LIBRARIES})
+
 #the static library doesn't have a main() function
-add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE})
+#add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE})
 
 #link against FLTK and SDL2
-target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
-target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
+#target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
+#target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
 
 #link against the rest of the code
-target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
+#target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
