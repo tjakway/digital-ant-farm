@@ -122,7 +122,6 @@ std::shared_ptr<unsigned char> SDLWindow::drawGrid(const Grid* grid)
     }
     //can now directly access pixels
 
-//    const unsigned char* pixelsPtr = reinterpret_cast<const unsigned char*>(rgbSurface->pixels);
     unsigned char* pixelsPtr = (unsigned char*)(rgbSurface->pixels);
 
     //need a custom deleter because we created a copy of the SDL_Surface
