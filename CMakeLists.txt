@@ -92,7 +92,7 @@ if(NOT WIN32)
     set_source_files_properties( ctags.output PROPERTIES GENERATED true)
     #see http://stackoverflow.com/questions/1932396/c-source-tagging for explanation of ctags options
     add_custom_command ( OUTPUT ctags.output
-        COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/test
+        COMMAND ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/test ${LOCAL_FLTK_SRC_DIR}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
 
     add_library(${MAIN_TARGET_LIB} STATIC ${SRC} ctags.output)
@@ -104,18 +104,18 @@ endif()
 target_link_libraries(${MAIN_TARGET_LIB} ${FLTK_LIBRARIES})
 
 #the static library doesn't have a main() function
-#add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE})
+add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE})
 
 #link against FLTK and SDL2
-#target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
-#target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
+target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
+target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
 
 #link against the rest of the code
-#target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
+target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
+
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
-
 
 #add google test
 #gtest is directly checked into this repository to reduce build script complexity
