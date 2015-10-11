@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+#NOTE: this script assumes that it's already in the bin directory
+#set the working directory to wherever you want FLTK to be built
 #builds fltk 1.3.3 in the specified dir
 
 USAGE='./build_fltk.sh [PARAM1] [PARAM2]
