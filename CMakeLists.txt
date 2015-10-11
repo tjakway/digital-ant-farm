@@ -11,23 +11,22 @@ endif()
 #tell cmake where to find module scripts
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/sdl2-cmake-scripts)
 
-set(LOCAL_FLTK_DIR "${CMAKE_SOURCE_DIR}/lib/fltk-1.3.3")
-
 #FLTK
-set(OPTION_BUILD_EXAMPLES OFF CACHE BOOL "Don't build FLTK examples")
-#use FLTK jpeg, zlib and png libraries instead of system built ins
-#cmake has problems finding these libraries on Mac OS X
-set(OPTION_USE_SYSTEM_LIBJPEG OFF CACHE BOOL "Use FLTK built ins")
-set(OPTION_USE_SYSTEM_ZLIB OFF CACHE BOOL "Use FLTK built ins")
-set(OPTION_USE_SYSTEM_LIBPNG OFF CACHE BOOL "Use FLTK built ins")
-#need FLTK for GUI
-#set(FLTK_SKIP_FLUID 1)
-#find_package(FLTK REQUIRED NO_MODULE)
-#include(${FLTK_USE_FILE})
-#find_package(FLTK REQUIRED)
-#include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
-add_subdirectory(${LOCAL_FLTK_DIR} "${CMAKE_BINARY_DIR}/fltk-1.3.3")
-include_directories(SYSTEM ${LOCAL_FLTK_DIR})
+#this is a very hackish workaround to build FLTK locally because FLTK version 1.3.3 DOES NOT work with the built in FindFLTK cmake module.  Even worse, the built in module DOES NOT WARN that it works incorrectly.  This was only discovered after poking through the FLTK developers' cmake scripts.
+
+#set relevant variables
+set(LOCAL_FLTK_SRC_DIR "${CMAKE_SOURCE_DIR}/lib/fltk-1.3.3")
+set(LOCAL_FLTK_BIN_DIR "${CMAKE_BINARY_DIR}/fltk-1.3.3")
+set(LOCAL_FLTK_LIB_DIRS ${LOCAL_FLTK_BIN_DIR}/lib)
+
+#build FLTK in its own directory at configure time so its libraries can be found by this CMake script
+execute_process(COMMAND "${CMAKE_SOURCE_DIR}/cmake/build_fltk.sh" "fltk-1.3.3" "${LOCAL_FLTK_SRC_DIR}"
+                WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
+
+include_directories(SYSTEM ${LOCAL_FLTK_SRC_DIR})
+
+set(${FLTK_LIBRARIES} "fltk;fltk_forms;fltk_gl;fltk_images;fltk_jpeg;fltk_png;fltk_z;")
+link_directories(${LOCAL_FLTK_LIB_DIRS})
 
 
 #need SDL
