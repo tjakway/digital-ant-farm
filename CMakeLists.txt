@@ -19,6 +19,14 @@ set(LOCAL_FLTK_SRC_DIR "${CMAKE_SOURCE_DIR}/lib/fltk-1.3.3")
 set(LOCAL_FLTK_BIN_DIR "${CMAKE_BINARY_DIR}/fltk-1.3.3")
 set(LOCAL_FLTK_LIB_DIR "${LOCAL_FLTK_BIN_DIR}/lib")
 
+#convert to absolute paths
+get_filename_component(ABSTEMPVAR ${LOCAL_FLTK_LIB_DIR} ABSOLUTE)
+set(LOCAL_FLTK_LIB_DIR "${ABSTEMPVAR}" CACHE STRING "FLTK lib dir" FORCE)
+get_filename_component(ABSTEMPVAR ${LOCAL_FLTK_BIN_DIR} ABSOLUTE)
+set(LOCAL_FLTK_BIN_DIR "${ABSTEMPVAR}" CACHE STRING "FLTK bin dir" FORCE)
+get_filename_component(ABSTEMPVAR ${LOCAL_FLTK_SRC_DIR} ABSOLUTE)
+set(LOCAL_FLTK_SRC_DIR "${ABSTEMPVAR}" CACHE STRING "FLTK src dir" FORCE)
+
 #build FLTK in its own directory at configure time so its libraries can be found by this CMake script
 execute_process(COMMAND "${CMAKE_SOURCE_DIR}/cmake/build_fltk.sh" "fltk-1.3.3" "${LOCAL_FLTK_SRC_DIR}"
                 WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
@@ -32,7 +40,7 @@ link_directories(${LOCAL_FLTK_LIB_DIR})
 set(FLTK_SPECED_LIB_NAME "${CMAKE_STATIC_LIBRARY_PREFIX}fltk${CMAKE_STATIC_LIBRARY_SUFFIX}")
 
 #CMake is terrible at finding libraries in directories, so let's be very specific
-set(${FLTK_LIBRARIES} "${LOCAL_FLTK_LIB_DIR}/${FLTK_SPECED_LIB_NAME}" CACHE STRING "FLTK Libraries Absolute Paths" FORCE)
+set(FLTK_LIBRARIES "${LOCAL_FLTK_LIB_DIR}/${FLTK_SPECED_LIB_NAME}" CACHE STRING "FLTK Libraries Absolute Paths" FORCE)
 
 
 #need SDL
