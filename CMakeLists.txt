@@ -3,11 +3,6 @@ project(digital_ant_farm)
 #target_compile_options and add_compile_options only available since cmake 2.8.12
 cmake_minimum_required(VERSION 2.8.12)
 
-#set the default build type as "Release"
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build: Debug, Release, DebugWithWarnings, or DebugWithWarningsOptimized." FORCE)
-endif()
-
 #tell cmake where to find module scripts
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/sdl2-cmake-scripts)
 
@@ -64,11 +59,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 function(all_targets_compile_property)
     #see http://stackoverflow.com/questions/5096881/does-set-target-properties-in-cmake-override-cmake-cxx-flags 
     target_compile_options(${MAIN_TARGET_LIB} PRIVATE ${ARGN})
+    target_compile_options(${MAIN_TARGET_EXE} PRIVATE ${ARGN})
     target_compile_options(${TEST_TARGET} PRIVATE ${ARGN})
 endfunction()
 
 function(all_targets_compile_definitions def)
     target_compile_definitions(${MAIN_TARGET_LIB} PRIVATE ${def})
+    target_compile_definitions(${MAIN_TARGET_EXE} PRIVATE ${def})
     target_compile_definitions(${TEST_TARGET} PRIVATE ${def})
 endfunction()
 
@@ -120,13 +117,25 @@ target_link_libraries(${MAIN_TARGET_LIB} ${FLTK_LIBRARIES})
 #the static library doesn't have a main() function
 add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE} ${FLTK_LIBRARIES})
 
+#On Linux FLTK depends on X11
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    find_package(X11 REQUIRED)
+    
+    target_link_libraries(${MAIN_TARGET_LIB} ${X11_LIBRARIES})
+    target_link_libraries(${MAIN_TARGET_EXE} ${X11_LIBRARIES})
+
+    target_link_libraries(${MAIN_TARGET_LIB} dl)
+    target_link_libraries(${MAIN_TARGET_EXE} dl)
+
+    include_directories(${X11_INCLUDE_DIR})
+endif()
+
 #link against FLTK and SDL2
 target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
 target_link_libraries(${MAIN_TARGET_EXE} ${SDL2_LIBRARY})
 
 #link against the rest of the code
 target_link_libraries(${MAIN_TARGET_EXE} ${MAIN_TARGET_LIB})
-
 
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
@@ -190,3 +199,12 @@ target_link_libraries(${TEST_TARGET} ${SDL2_LIBRARY})
 
 #copy the test resources directory into the bin directory so the tests executable can find it
 file(COPY "res/test/" DESTINATION ${CMAKE_BINARY_DIR}/res/test)
+
+
+
+
+#On Linux FLTK depends on X11
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    target_link_libraries(${TEST_TARGET} ${X11_LIBRARIES})
+    target_link_libraries(${TEST_TARGET} dl)
+endif()
