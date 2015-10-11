@@ -17,7 +17,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/sdl2-cmake-
 #set relevant variables
 set(LOCAL_FLTK_SRC_DIR "${CMAKE_SOURCE_DIR}/lib/fltk-1.3.3")
 set(LOCAL_FLTK_BIN_DIR "${CMAKE_BINARY_DIR}/fltk-1.3.3")
-set(LOCAL_FLTK_LIB_DIRS ${LOCAL_FLTK_BIN_DIR}/lib)
+set(LOCAL_FLTK_LIB_DIR "${LOCAL_FLTK_BIN_DIR}/lib")
 
 #build FLTK in its own directory at configure time so its libraries can be found by this CMake script
 execute_process(COMMAND "${CMAKE_SOURCE_DIR}/cmake/build_fltk.sh" "fltk-1.3.3" "${LOCAL_FLTK_SRC_DIR}"
@@ -25,8 +25,14 @@ execute_process(COMMAND "${CMAKE_SOURCE_DIR}/cmake/build_fltk.sh" "fltk-1.3.3" "
 
 include_directories(SYSTEM ${LOCAL_FLTK_SRC_DIR})
 
-set(${FLTK_LIBRARIES} "fltk;fltk_forms;fltk_gl;fltk_images;fltk_jpeg;fltk_png;fltk_z;")
-link_directories(${LOCAL_FLTK_LIB_DIRS})
+link_directories(${LOCAL_FLTK_LIB_DIR})
+
+#use cmake to get platform-specific library prefixes and suffixes
+#e.g. lib and .a for unix => libfltk.a
+set(FLTK_SPECED_LIB_NAME "${CMAKE_STATIC_LIBRARY_PREFIX}fltk${CMAKE_STATIC_LIBRARY_SUFFIX}")
+
+#CMake is terrible at finding libraries in directories, so let's be very specific
+set(${FLTK_LIBRARIES} "${LOCAL_FLTK_LIB_DIR}/${FLTK_SPECED_LIB_NAME}" CACHE STRING "FLTK Libraries Absolute Paths" FORCE)
 
 
 #need SDL
@@ -104,7 +110,7 @@ endif()
 target_link_libraries(${MAIN_TARGET_LIB} ${FLTK_LIBRARIES})
 
 #the static library doesn't have a main() function
-add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE})
+add_executable(${MAIN_TARGET_EXE} ${MAIN_SRC_FILE} ${FLTK_LIBRARIES})
 
 #link against FLTK and SDL2
 target_link_libraries(${MAIN_TARGET_EXE} ${FLTK_LIBRARIES})
