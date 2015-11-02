@@ -5,7 +5,6 @@
 
 #include "Grid.hpp"
 #include "Backend.hpp"
-#include "DisplayBackend.hpp"
 
 namespace jakway_antf
 {
@@ -36,10 +35,6 @@ private:
      *  set to UNLIMITED_HISTORY to store an unlimited number of generations
      */
     long numGenHistory;
-
-    /** BACKENDS */
-    DisplayBackend *displayBackend;
-    Backend        *imageBackend;
 
 public:
     /**

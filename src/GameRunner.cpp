@@ -14,8 +14,6 @@ GameRunner::GameRunner(Grid* seed)
 
 GameRunner::~GameRunner()
 {
-    delete displayBackend;
-    delete imageBackend;
     delete currentGen;
 }
 
