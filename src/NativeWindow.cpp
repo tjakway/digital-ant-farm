@@ -1,7 +1,5 @@
 #include "NativeWindow.hpp"
 
-#include <FL/Fl.H>
-#include <FL/Fl_Double_Window.H>
 
 using namespace jakway_antf;
 
@@ -14,16 +12,12 @@ NativeWindow::NativeWindow() : NativeWindow(DEFAULT_WIDTH, DEFAULT_HEIGHT, nullp
 
 NativeWindow::NativeWindow(int width, int height, const char* label)
 {
-    window = new Fl_Double_Window(width, height, label);
 }
 
 NativeWindow::~NativeWindow()
 {
-    delete window;
 }
 
 int NativeWindow::beginEventLoop(int argc, char** argv)
 {
-    window->show(argc, argv);
-    return Fl::run();
 }

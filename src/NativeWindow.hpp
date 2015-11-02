@@ -5,9 +5,6 @@
 #include "gtest/gtest.h"
 #endif
 
-#include <FL/Fl.H>
-#include <FL/Fl_Double_Window.H>
-
 #include "DisplayBackend.hpp"
 
 namespace jakway_antf
@@ -17,14 +14,12 @@ class NativeWindow : public DisplayBackend
 private:
    static const int DEFAULT_WIDTH, DEFAULT_HEIGHT; 
 
-   Fl_Double_Window *window;
-
 protected:
    
    /**
     * pure virtual function to draw to one of the buffers
     */
-   virtual void updateWindow(Fl_Double_Window* win) = 0;
+   virtual void updateWindow(/*need a window type here!*/) = 0;
 
 public:
    NativeWindow();

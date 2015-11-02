@@ -8,11 +8,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build: Debug, Release, DebugWithWarnings, or DebugWithWarningsOptimized." FORCE)
 endif()
 
-#need FLTK for GUI
-set(FLTK_SKIP_FLUID 1)
-find_package(FLTK REQUIRED)
-include_directories(SYSTEM ${FLTK_INCLUDE_DIR}) #suppress warnings
-
 set(MAIN_TARGET "ant_farm_lib")
 set(TEST_TARGET "tests")
 
@@ -77,9 +72,6 @@ else()
 endif()
 #-----------------------------------------------------------------------
 
-#link against FLTK
-target_link_libraries(${MAIN_TARGET} ${FLTK_LIBRARIES})
-
 #build tests
 #see https://github.com/dmonopoly/gtest-cmake-example/blob/master/CMakeLists.txt for example
 
@@ -137,8 +129,6 @@ endif()
 target_link_libraries(${TEST_TARGET} gtest gtest_main)
 
 target_link_libraries(${TEST_TARGET} ant_farm_lib)
-
-target_link_libraries(${TEST_TARGET} ${FLTK_LIBRARIES})
 
 
 #copy the test resources directory into the bin directory so the tests executable can find it
